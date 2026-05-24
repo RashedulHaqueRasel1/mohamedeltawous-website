@@ -39,13 +39,13 @@ const scenarios = [
 
 export default function Banner() {
   return (
-    <section className="relative overflow-hidden bg-secondary px-4 pb-16 pt-32 md:pb-24 md:pt-40">
+    <section className="relative overflow-hidden  bg-secondary px-4 pb-16 pt-32 md:pb-24 md:pt-40">
       {/* Dynamic Particles Background */}
       <div className="absolute inset-0 z-0">
         <ParticlesBackground />
       </div>
 
-      <div className="relative z-10 container mx-auto">
+      <div className="relative z-10 container mx-auto ">
         {/* Top content */}
         <div className="mx-auto text-center container">
           <div className="inline-flex items-center rounded-full border border-[#111827]/10 bg-white/40 px-5 py-1.5 text-[12px] font-bold uppercase tracking-[0.12em] text-[#111827] backdrop-blur-md">
