@@ -403,7 +403,7 @@ export default function Navbar() {
             alt="Second Sight Logo"
             width={110}
             height={60}
-            className="h-auto w-[78px] sm:w-[90px] md:w-[110px]"
+            className="h-auto w-[100px] sm:w-[110px] md:w-[130px]"
             priority
           />
         </Link>
@@ -469,6 +469,13 @@ export default function Navbar() {
           </div>
 
           {/* CTA Button */}
+          <Link
+            href="/login"
+            className="hidden sm:inline-flex rounded-lg text-[#0f172a] border-[#0f172a] border px-5 py-2.5 text-[14px] md:px-6 md:py-3 md:text-[15px] font-semibold transition hover:opacity-90 shadow-lg shadow-gray-200"
+          >
+            Login
+          </Link>
+
           <Link
             href="/dashboard/new-scenario"
             className="hidden sm:inline-flex rounded-lg bg-[#0f172a] px-5 py-2.5 text-[14px] md:px-6 md:py-3.5 md:text-[15px] font-semibold text-white transition hover:opacity-90 shadow-lg shadow-gray-200"

@@ -96,12 +96,11 @@ export default function ParticlesBackground() {
   if (!init) return null;
 
   return (
-    <div className="absolute inset-0 -z-10 h-full w-full pointer-events-none">
-      <Particles
-        id="tsparticles"
-        particlesLoaded={particlesLoaded}
-        options={options}
-      />
-    </div>
+    <Particles
+      id="tsparticles"
+      particlesLoaded={particlesLoaded}
+      options={options}
+      className="absolute inset-0 h-full w-full"
+    />
   );
 }

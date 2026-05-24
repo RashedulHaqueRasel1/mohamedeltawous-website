@@ -1,23 +1,15 @@
 "use client";
 
+import { motion } from "framer-motion";
 import ParticlesBackground from "@/components/shared/ParticlesBackground";
 import Link from "next/link";
-
-const riskIndicators = [
-  { name: "Market Crash", level: "HIGH", color: "bg-[#FF6B6B] text-white" },
-  {
-    name: "Regulatory Shift",
-    level: "MED",
-    color: "bg-[#F5C451] text-[#1f2937]",
-  },
-  { name: "Talent War", level: "LOW", color: "bg-[#7ED957] text-[#1f2937]" },
-];
+import { useRef, useState } from "react";
 
 const scenarios = [
   {
     title: "Scenario A: Acceleration Economy",
     subtitle:
-      "Rapid growth. Disrupted markets. Expanding opportunity. Signals AI ",
+      "Rapid growth. Disrupted markets. Expanding opportunity. Signals AI adoption surges Capital flows increase New entrants reshape industries",
     bordered: true,
   },
   {
@@ -38,150 +30,265 @@ const scenarios = [
 ];
 
 export default function Banner() {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [playing, setPlaying] = useState(false);
+  const [activeTab, setActiveTab] = useState<"Week" | "Month">("Month");
+
+  const togglePlay = () => {
+    if (!videoRef.current) return;
+    if (playing) {
+      videoRef.current.pause();
+      setPlaying(false);
+    } else {
+      videoRef.current.play();
+      setPlaying(true);
+    }
+  };
+
   return (
-    <section className="relative overflow-hidden  bg-secondary px-4 pb-16 pt-32 md:pb-24 md:pt-40">
-      {/* Dynamic Particles Background */}
-      <div className="absolute inset-0 z-0">
+    <section className="relative overflow-hidden bg-secondary px-4 pb-24 pt-28 md:pt-48">
+      {/* Particles Background */}
+      <div className="absolute inset-0 -z-0 pointer-events-none">
         <ParticlesBackground />
       </div>
 
-      <div className="relative z-10 container mx-auto ">
-        {/* Top content */}
-        <div className="mx-auto text-center container">
-          <div className="inline-flex items-center rounded-full border border-[#111827]/10 bg-white/40 px-5 py-1.5 text-[12px] font-bold uppercase tracking-[0.12em] text-[#111827] backdrop-blur-md">
-            <span className="mr-2 h-1.5 w-1.5 rounded-full bg-[#111827]" />
-            Intelligence Reimagined
-          </div>
+      <div className="relative z-10 container mx-auto">
+        <motion.div
+          className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          {/* ── LEFT COLUMN ── */}
+          <div className="flex flex-col items-start">
+            <h1 className="text-[38px] sm:text-5xl lg:text-[58px] font-extrabold leading-[1.1] tracking-tight text-[#0F172A]">
+              AI-Powered Scenario
+              <br />
+              Planning Platform.
+            </h1>
 
-          <h1 className="mt-8 text-[40px] font-extrabold leading-[1.1] text-[#0F172A] sm:text-6xl lg:text-[76px] tracking-tight">
-            AI-Powered Scenario
-            <br className="hidden md:block" />
-            Planning Platform.
-          </h1>
+            <p className="mt-6 text-[16px] sm:text-[17px] leading-relaxed text-[#5B6B82] font-medium max-w-[480px]">
+              Enabling Businesses and Organizations to Create High-Quality,
+              Professional Scenario Plans with AI
+            </p>
 
-          <p className="mx-auto mt-8 max-w-4xl text-[17px] leading-relaxed text-[#5B6B82] sm:text-xl font-medium">
-            Analyze uncertainty, explore multiple futures, and stress-test
-            strategic decisions in minutes, not months.
-          </p>
-
-          <div className="mt-10 flex flex-col items-center justify-center gap-5 sm:flex-row">
-            <Link
-              href="/dashboard/new-scenario"
-              className="inline-flex h-[60px] items-center justify-center rounded-xl bg-[#0F172A] px-10 text-[16px] font-bold text-white transition hover:opacity-95 shadow-xl shadow-blue-900/10 cursor-pointer"
-            >
-              Start Scenario Analysis
-            </Link>
-
-            <Link
-              href={"/pdf/secondsight.pdf"}
-              target="_blank"
-              className="inline-flex h-[60px] items-center justify-center rounded-xl border-2 border-[#0F172A] bg-transparent px-10 text-[16px] font-bold text-[#0F172A] transition hover:bg-white/40 cursor-pointer"
-            >
-              View Sample Report
-            </Link>
-          </div>
-        </div>
-
-        {/* Dashboard mockup */}
-        <div className="mx-auto mt-16  container rounded-[32px] font-sora">
-          <div className="rounded-[31px] border border-[#111827]/20 shadow-[0_32px_80px_rgba(15,23,42,0.12)] bg-white overflow-hidden">
-            {/* Window top bar */}
-            <div className="flex items-center justify-between border-b border-gray-100 px-6 py-5">
-              <div className="flex items-center gap-2.5">
-                <span className="h-3 w-3 rounded-full bg-[#FF6B6B]" />
-                <span className="h-3 w-3 rounded-full bg-[#F5C451]" />
-                <span className="h-3 w-3 rounded-full bg-[#36C690]" />
-              </div>
-
-              <div className="h-4 w-32 rounded-full bg-[#F1F5F9]" />
+            <div className="mt-9">
+              <Link
+                href="/dashboard/new-scenario"
+                className="inline-flex h-[52px] items-center justify-center rounded-xl bg-[#0F172A] px-8 text-[15px] font-bold text-white transition hover:opacity-90 shadow-xl shadow-blue-900/10 cursor-pointer"
+              >
+                Start Scenario Analysis
+              </Link>
             </div>
 
-            <div className="p-5 md:p-10">
-              {/* <div className="grid gap-6 lg:grid-cols-[260px_minmax(0,1fr)]"> */}
-              <div className="">
-                {/* Left sidebar */}
-                {/* <div className="space-y-6">
-                  <div className="rounded-[24px] bg-secondary p-7">
-                    <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-[#4B5E7D]">
-                      Robustness Score
+            {/* Trusted by */}
+            <div className="mt-8 flex items-center gap-3">
+              <div className="flex -space-x-2.5">
+                {["bg-[#F472B6]", "bg-[#60A5FA]", "bg-[#34D399]"].map(
+                  (color, i) => (
+                    <div
+                      key={i}
+                      className={`h-8 w-8 rounded-full border-2 border-secondary ${color} flex items-center justify-center text-white text-[10px] font-bold`}
+                    >
+                      {["M", "A", "K"][i]}
+                    </div>
+                  ),
+                )}
+              </div>
+              <p className="text-[14px] font-medium text-[#5B6B82]">
+                Trusted by{" "}
+                <span className="font-bold text-[#0F172A]">2,400+</span> teams
+              </p>
+            </div>
+          </div>
+
+          {/* ── RIGHT COLUMN – Video + Floating Cards ── */}
+          <div className="relative mt-10 sm:mt-0">
+            {/* Video */}
+            <div className="relative rounded-2xl overflow-hidden shadow-[0_32px_80px_rgba(15,23,42,0.16)] border border-white/60">
+              <video
+                ref={videoRef}
+                src="/videos/banner.mp4"
+                className="w-full h-full object-cover aspect-video"
+                loop
+                muted
+                playsInline
+                onEnded={() => setPlaying(false)}
+              />
+
+              {/* Play overlay */}
+              {!playing && (
+                <button
+                  onClick={togglePlay}
+                  className="absolute inset-0 flex items-center justify-center bg-black/10 hover:bg-black/15 transition cursor-pointer"
+                  aria-label="Play video"
+                >
+                  <div className="h-14 w-14 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-lg hover:scale-105 transition-transform">
+                    <svg
+                      className="w-6 h-6 text-[#0F172A] ml-0.5"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M8 5v14l11-7z" />
+                    </svg>
+                  </div>
+                </button>
+              )}
+
+              {/* Pause button */}
+              {playing && (
+                <button
+                  onClick={togglePlay}
+                  className="absolute bottom-3 right-3 h-9 w-9 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center shadow-md hover:scale-105 transition-transform cursor-pointer"
+                  aria-label="Pause video"
+                >
+                  <svg
+                    className="w-4 h-4 text-[#0F172A]"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+                  </svg>
+                </button>
+              )}
+            </div>
+            ``
+            {/* Floating Card: Risk Forecast – top left */}
+            <div className="absolute -top-5 -left-6 hidden sm:block z-10 opacity-90 backdrop-blur-md ">
+              <div className="bg-white/80 rounded-2xl shadow-xl px-4 py-3 min-w-[150px] border border-gray-100">
+                <div className="flex items-center gap-1.5 text-[11px] text-[#64748B] font-medium">
+                  <span>Risk Forecast</span>
+                  <svg
+                    className="w-3.5 h-3.5 text-[#94A3B8]"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                  >
+                    <circle cx="12" cy="12" r="10" />
+                    <path d="M12 8v4M12 16h.01" />
+                  </svg>
+                </div>
+                <div className="mt-1.5 flex items-center gap-2">
+                  <span className="h-2 w-2 rounded-full bg-[#22C55E] flex-shrink-0" />
+                  <span className="text-[18px] font-extrabold text-[#0F172A]">
+                    Low · 12%
+                  </span>
+                </div>
+              </div>
+            </div>
+            {/* Floating Card: Market Trend – top right */}
+            <div className="absolute -top-5 -right-6 hidden sm:block z-10 opacity-90 backdrop-blur-md">
+              <div className="bg-white/80 rounded-2xl shadow-xl px-4 py-3 min-w-[140px] border border-gray-100">
+                <div className="flex items-center justify-between gap-3">
+                  <div>
+                    <p className="text-[11px] text-[#64748B] font-medium">
+                      Market Trend
                     </p>
-
-                    <div className="mt-6 flex items-baseline gap-2">
-                      <span className="text-[56px] font-extrabold leading-none text-[#0F172A]">
-                        84
-                      </span>
-                      <span className="text-[15px] font-bold text-[#16A34A]">
-                        +12%
-                      </span>
-                    </div>
-
-                    <div className="mt-6 h-2 w-full rounded-full bg-[#D1E4F3]">
-                      <div className="h-2 w-[84%] rounded-full bg-[#0F172A]" />
-                    </div>
-                  </div>
-
-                  <div className="rounded-[24px] bg-secondary p-7">
-                    <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-[#4B5E7D]">
-                      Risk Indicators
+                    <p className="mt-1 text-[18px] font-extrabold text-[#0F172A]">
+                      +24.8%
                     </p>
-
-                    <div className="mt-5 space-y-4">
-                      {riskIndicators.map((item) => (
-                        <div
-                          key={item.name}
-                          className="flex items-center justify-between gap-3"
-                        >
-                          <span className="text-[15px] font-semibold text-[#1F2937]">
-                            {item.name}
-                          </span>
-                          <span
-                            className={`rounded px-2.5 py-1 text-[11px] font-bold ${item.color}`}
-                          >
-                            {item.level}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
+                    <p className="text-[10px] text-[#94A3B8] font-medium">
+                      QoQ
+                    </p>
                   </div>
-                </div> */}
-
-                {/* Right matrix */}
-                <div className="rounded-[24px] bg-secondary p-6 md:p-8">
-                  <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
-                    <h3 className="text-[22px] font-extrabold text-primary">
-                      Scenario Intelligence Matrix
-                    </h3>
-
-                    {/* <div className="inline-flex w-fit items-center rounded-xl border border-gray-200 bg-white/60 p-1.5 backdrop-blur-sm">
-                      <button className="rounded-lg px-5 py-2 text-[14px] font-bold text-[#0F172A] cursor-pointer">
-                        Week
-                      </button>
-                      <button className="rounded-lg bg-[#0F172A] px-5 py-2 text-[14px] font-bold text-white shadow-lg cursor-pointer">
-                        Month
-                      </button>
-                    </div> */}
-                  </div>
-
-                  <div className="mt-8 grid gap-5 md:grid-cols-2">
-                    {scenarios.map((item) => (
+                  <div className="flex items-end gap-0.5 h-8">
+                    {[40, 60, 45, 70, 55, 80, 65].map((h, i) => (
                       <div
-                        key={item.title}
-                        className={`flex min-h-[140px] flex-col items-center justify-center rounded-[24px] bg-white px-6 py-8 text-center transition hover:shadow-xl hover:shadow-gray-200/50 ${
-                          item.bordered
-                            ? "border-[3px] border-dashed border-[#E2E8F0]"
-                            : ""
-                        }`}
-                      >
-                        <h4 className="text-[20px] font-extrabold text-[#0F172A]">
-                          {item.title}
-                        </h4>
-                        <p className="mt-2.5 text-[14px] font-medium text-[#64748B]">
-                          {item.subtitle}
-                        </p>
-                      </div>
+                        key={i}
+                        className="w-1.5 rounded-sm bg-[#3B82F6]"
+                        style={{ height: `${h}%` }}
+                      />
                     ))}
                   </div>
                 </div>
+              </div>
+            </div>
+            {/* Floating Card: AI Prediction – bottom center */}
+            <div className="absolute -bottom-5 left-10 -translate-x-1/2 hidden sm:block w-max z-10 opacity-90 backdrop-blur-sm">
+              <div className="bg-white/80 rounded-2xl shadow-xl px-5 py-3 border border-gray-100">
+                <div className="flex items-center gap-2.5">
+                  <div className="h-8 w-8 rounded-full bg-[#EFF6FF] flex items-center justify-center flex-shrink-0">
+                    <svg
+                      className="w-4 h-4 text-[#3B82F6]"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={2}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <p className="text-[12px] font-semibold text-[#0F172A]">
+                      AI Prediction Accuracy
+                    </p>
+                    <p className="text-[20px] font-extrabold text-[#0F172A] leading-tight">
+                      96.4%
+                    </p>
+                    <p className="text-[11px] text-[#94A3B8]">
+                      Across 1,284 simulations
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+
+      {/* DASHBOARD — Scenario Intelligence Matrix */}
+
+      <div className="mx-auto mt-24 rounded-[32px] font-sora relative z-50">
+        <div className="rounded-[31px] border border-[#111827]/20 shadow-[0_32px_80px_rgba(15,23,42,0.12)] bg-white/80 overflow-hidden container mx-auto ">
+          <div className="p-5 md:p-10 z-50">
+            <div className="rounded-[24px] bg-secondary p-6 md:p-8">
+              {/* Header row */}
+              <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
+                <h3 className="text-[22px] font-extrabold text-primary">
+                  Scenario Intelligence Matrix
+                </h3>
+                {/* Week / Month toggle */}
+                <div className="inline-flex w-fit items-center rounded-xl border border-gray-200 bg-white/60 p-1.5 backdrop-blur-sm">
+                  {(["Week", "Month"] as const).map((tab) => (
+                    <button
+                      key={tab}
+                      onClick={() => setActiveTab(tab)}
+                      className={`rounded-lg px-5 py-2 text-[14px] font-bold cursor-pointer transition ${
+                        activeTab === tab
+                          ? "bg-[#0F172A] text-white shadow-lg"
+                          : "text-[#0F172A]"
+                      }`}
+                    >
+                      {tab}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Scenario cards grid */}
+              <div className="mt-8 grid gap-5 md:grid-cols-2">
+                {scenarios.map((item) => (
+                  <div
+                    key={item.title}
+                    className={`flex min-h-[140px] flex-col items-center justify-center rounded-[24px] bg-white px-6 py-8 text-center transition hover:shadow-xl hover:shadow-gray-200/50 ${
+                      item.bordered
+                        ? "border-[3px] border-dashed border-[#E2E8F0]"
+                        : ""
+                    }`}
+                  >
+                    <h4 className="text-[20px] font-extrabold text-[#0F172A]">
+                      {item.title}
+                    </h4>
+                    <p className="mt-2.5 text-[14px] font-medium text-[#64748B]">
+                      {item.subtitle}
+                    </p>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
