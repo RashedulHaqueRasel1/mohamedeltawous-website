@@ -1,10 +1,10 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useMotionTemplate, useMotionValue } from "framer-motion";
 import ParticlesBackground from "@/components/shared/ParticlesBackground";
 import CountUp from "@/components/shared/CountUp";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, MouseEvent } from "react";
 
 const scenarios = [
   {
@@ -12,23 +12,102 @@ const scenarios = [
     subtitle:
       "Rapid growth. Disrupted markets. Expanding opportunity. Signals AI adoption surges Capital flows increase New entrants reshape industries",
     bordered: true,
+    badgeText: "LOW / HIGH",
+    badgeStyles: "bg-[#EFF6FF] text-[#2563EB]", // Blue theme
   },
   {
     title: "Scenario B: Controlled Stability",
     subtitle:
       "Predictable markets. Slower innovation. Operational optimization. Signals Regulatory balance Moderate growth Industry maturity",
+    badgeText: "HIGH / HIGH",
+    badgeStyles: "bg-[#ECFDF5] text-[#10B981]", // Green theme
   },
   {
     title: "Scenario C: Fractured Landscape",
     subtitle:
       "Volatility rises. Markets diverge. Uncertainty intensifies. Signals Geopolitical instability Consumer fragmentation Supply chain disruption",
+    badgeText: "LOW / LOW",
+    badgeStyles: "bg-[#FEF2F2] text-[#EF4444]", // Red theme
   },
   {
     title: "Scenario D: Power Concentration",
     subtitle:
       "Market consolidation. Dominant platforms. Reduced flexibility. Signals Mergers accelerate",
+    badgeText: "HIGH / LOW",
+    badgeStyles: "bg-[#FFF7ED] text-[#F97316]", // Orange theme
   },
 ];
+
+// আলাদা সাব-কম্পোনেন্ট যাতে প্রতিটা কার্ডের মাউস পজিশন আলাদাভাবে ট্র্যাক হয়
+function ScenarioCard({ item }: { item: (typeof scenarios)[0] }) {
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  function handleMouseMove({ currentTarget, clientX, clientY }: MouseEvent) {
+    const { left, top } = currentTarget.getBoundingClientRect();
+    mouseX.set(clientX - left);
+    mouseY.set(clientY - top);
+  }
+
+  return (
+    <div
+      onMouseMove={handleMouseMove}
+      className={`group relative flex min-h-[140px] flex-col items-center justify-center rounded-[24px] bg-white px-6 py-8 text-center transition-all duration-300 hover:shadow-xl hover:shadow-gray-200/50 overflow-hidden ${
+        item.bordered
+          ? "border-[3px] border-dashed border-[#E2E8F0]"
+          : "border border-transparent"
+      }`}
+    >
+      {/* মডার্ন ব্যাকগ্রাউন্ড স্পটলাইট গ্লো (আপনার কালার স্কিমের সাথে মিলিয়ে লাইট ব্লু আভা) */}
+      {/* মাউসের পজিশন অনুযায়ী কার্ডের চারপাশে (আশেপাশে) গ্লোয়িং শ্যাডো ইফেক্ট */}
+      <motion.div
+        className="pointer-events-none absolute -inset-px opacity-0 group-hover:opacity-100 transition duration-300 z-0 blur-[20px]"
+        style={{
+          background: useMotionTemplate`
+            radial-gradient(
+              130px circle at ${mouseX}px ${mouseY}px,
+              rgba(14, 165, 233, 0.25),
+              transparent 70%
+            )
+          `,
+        }}
+      />
+
+      {/* কার্ডের ভেতরে হালকা লাইট ইফেক্ট (যাতে ভেতরটাও দেখতে সুন্দর লাগে) */}
+      <motion.div
+        className="pointer-events-none absolute -inset-px opacity-0 group-hover:opacity-100 transition duration-300 z-0"
+        style={{
+          background: useMotionTemplate`
+            radial-gradient(
+              200px circle at ${mouseX}px ${mouseY}px,
+              rgba(14, 165, 233, 0.3),
+              transparent 80%
+            )
+          `,
+        }}
+      />
+
+      {/* Badge Element */}
+      {item.badgeText && (
+        <span
+          className={`absolute top-5 right-6 rounded-full px-3 py-1 text-[12px] font-bold tracking-wider z-10 ${item.badgeStyles}`}
+        >
+          {item.badgeText}
+        </span>
+      )}
+
+      {/* Content */}
+      <div className="relative z-10 flex flex-col items-center justify-center">
+        <h4 className="mt-4 text-[20px] font-extrabold text-[#0F172A] group-hover:text-sky-600 transition-colors duration-300">
+          {item.title}
+        </h4>
+        <p className="mt-2.5 max-w-[90%] text-[14px] font-medium text-[#64748B] leading-relaxed">
+          {item.subtitle}
+        </p>
+      </div>
+    </div>
+  );
+}
 
 export default function Banner() {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -157,7 +236,7 @@ export default function Banner() {
                 )}
               </button>
             </div>
-            {/* Floating Card: Risk Forecast – top left */}
+            {/* Floating Card: Risk Forecast */}
             <div className="absolute -top-5 -left-6 hidden sm:block z-10 opacity-90 backdrop-blur-md ">
               <div className="bg-white/80 rounded-2xl shadow-xl px-4 py-3 min-w-[150px] border border-gray-100">
                 <div className="flex items-center gap-1.5 text-[11px] text-[#64748B] font-medium">
@@ -181,7 +260,7 @@ export default function Banner() {
                 </div>
               </div>
             </div>
-            {/* Floating Card: Market Trend – top right */}
+            {/* Floating Card: Market Trend */}
             <div className="absolute -top-5 -right-6 hidden sm:block z-10 opacity-90 backdrop-blur-md">
               <div className="bg-white/80 rounded-2xl shadow-xl px-4 py-3 min-w-[140px] border border-gray-100">
                 <div className="flex items-center justify-between gap-3">
@@ -223,7 +302,7 @@ export default function Banner() {
                 </div>
               </div>
             </div>
-            {/* Floating Card: AI Prediction – bottom center */}
+            {/* Floating Card: AI Prediction */}
             <div className="absolute -bottom-5 left-10 -translate-x-1/2 hidden sm:block w-max z-10 opacity-90 backdrop-blur-sm">
               <div className="bg-white/80 rounded-2xl shadow-xl px-5 py-3 border border-gray-100">
                 <div className="flex items-center gap-2.5">
@@ -268,7 +347,6 @@ export default function Banner() {
       </div>
 
       {/* DASHBOARD — Scenario Intelligence Matrix */}
-
       <div className="mx-auto mt-24 rounded-[32px] font-sora relative z-20">
         <div className="rounded-[31px] border border-[#111827]/20 shadow-[0_32px_80px_rgba(15,23,42,0.12)] bg-white/80 overflow-hidden container mx-auto ">
           <div className="p-5 md:p-10 z-50">
@@ -299,21 +377,7 @@ export default function Banner() {
               {/* Scenario cards grid */}
               <div className="mt-8 grid gap-5 md:grid-cols-2">
                 {scenarios.map((item) => (
-                  <div
-                    key={item.title}
-                    className={`flex min-h-[140px] flex-col items-center justify-center rounded-[24px] bg-white px-6 py-8 text-center transition hover:shadow-xl hover:shadow-gray-200/50 ${
-                      item.bordered
-                        ? "border-[3px] border-dashed border-[#E2E8F0]"
-                        : ""
-                    }`}
-                  >
-                    <h4 className="text-[20px] font-extrabold text-[#0F172A]">
-                      {item.title}
-                    </h4>
-                    <p className="mt-2.5 text-[14px] font-medium text-[#64748B]">
-                      {item.subtitle}
-                    </p>
-                  </div>
+                  <ScenarioCard key={item.title} item={item} />
                 ))}
               </div>
             </div>
