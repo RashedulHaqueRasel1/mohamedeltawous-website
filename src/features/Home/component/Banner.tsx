@@ -243,7 +243,7 @@ export default function Banner() {
 
       {/* DASHBOARD — Scenario Intelligence Matrix */}
 
-      <div className="mx-auto mt-24 rounded-[32px] font-sora relative z-50">
+      <div className="mx-auto mt-24 rounded-[32px] font-sora relative z-20">
         <div className="rounded-[31px] border border-[#111827]/20 shadow-[0_32px_80px_rgba(15,23,42,0.12)] bg-white/80 overflow-hidden container mx-auto ">
           <div className="p-5 md:p-10 z-50">
             <div className="rounded-[24px] bg-secondary p-6 md:p-8">
