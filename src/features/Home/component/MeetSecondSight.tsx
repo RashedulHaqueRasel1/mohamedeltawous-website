@@ -14,6 +14,7 @@ import {
 import { motion } from "framer-motion";
 import ParticlesBackground from "@/components/shared/ParticlesBackground";
 import Image from "next/image";
+import CountUp from "@/components/shared/CountUp";
 
 const features = [
   {
@@ -184,7 +185,7 @@ export default function MeetSecondSight() {
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
                 </div>
                 <span className="text-[11px] sm:text-xs font-bold text-[#0F172A] tracking-tight">
-                  Signals: 1,247
+                  Signals: <CountUp end={1247} />
                 </span>
               </motion.div>
 

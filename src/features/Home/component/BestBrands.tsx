@@ -6,6 +6,7 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 import ParticlesBackground from "@/components/shared/ParticlesBackground";
+import CountUp from "@/components/shared/CountUp";
 
 const brandImages = [
   { label: "Brand 1", src: "/images/brand-1.jpg" },
@@ -64,7 +65,7 @@ export default function BestBrands() {
       <div className="relative z-10 container mx-auto px-4 md:px-6">
         <div className="flex flex-col md:flex-row md:items-start justify-between gap-6 mb-12">
           <h2 className="text-[26px] sm:text-[32px] md:text-[38px] font-extrabold text-[#0F172A] tracking-tight leading-snug max-w-2xl">
-            Over 2,600 of the world&apos;s best
+            Over <CountUp end={2600} /> of the world&apos;s best
             <br />
             brands plan with Second Sight. Be the next.
           </h2>
