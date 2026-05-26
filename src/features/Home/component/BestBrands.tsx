@@ -22,15 +22,15 @@ const slides = [...brandImages, ...brandImages, ...brandImages];
 function LogoCard({ src, label }: { src: string; label: string }) {
   return (
     <div
-      className="w-[180px] h-[96px] sm:w-[210px] sm:h-[104px] shrink-0 flex items-center justify-center bg-white border border-[#E2E8F0] rounded-[20px] shadow-[0_4px_16px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_24px_rgba(15,23,42,0.08)] hover:-translate-y-1 transition-all duration-300"
+      className="w-[220px] h-[120px] sm:w-[260px] sm:h-[140px] shrink-0 flex items-center justify-center bg-transparent border border-transparent rounded-[20px] hover:-translate-y-1 transition-all duration-300"
       aria-label={label}
     >
       <Image
         src={src}
         alt={label}
-        width={136}
-        height={64}
-        className="max-w-[136px] max-h-[64px] h-auto w-auto object-contain"
+        width={210}
+        height={96}
+        className="max-w-[210px] max-h-[96px] h-auto w-auto object-contain"
       />
     </div>
   );
@@ -65,9 +65,8 @@ export default function BestBrands() {
       <div className="relative z-10 container mx-auto px-4 md:px-6">
         <div className="flex flex-col md:flex-row md:items-start justify-between gap-6 mb-12">
           <h2 className="text-[26px] sm:text-[32px] md:text-[38px] font-extrabold text-[#0F172A] tracking-tight leading-snug max-w-2xl">
-            Over <CountUp end={2600} /> of the world&apos;s best
-            <br />
-            brands plan with Second Sight. Be the next.
+            The below companies are actively planning using Second Sight. Be the
+            next one
           </h2>
 
           <div className="flex gap-3 shrink-0 mt-1">

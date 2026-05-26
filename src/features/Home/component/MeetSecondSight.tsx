@@ -274,7 +274,7 @@ export default function MeetSecondSight() {
             </h2>
 
             {/* Description */}
-            <p className="mt-6 text-[15px] sm:text-[17px] leading-relaxed text-[#5B6B82] max-w-[620px] font-medium">
+            <p className="mt-6 text-[15px] sm:text-[17px] leading-relaxed text-[#5B6B82] max-w-[620px] font-semibold">
               Second Sight combines AI-powered forecasting, environmental
               scanning, and strategic intelligence to help organizations
               anticipate future risks, opportunities, and market shifts.
