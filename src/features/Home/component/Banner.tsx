@@ -8,20 +8,22 @@ import { useEffect, useRef, useState, MouseEvent } from "react";
 
 const scenarios = [
   {
-    title: "Scenario A: Acceleration Economy",
-    subtitle:
-      "Rapid growth. Disrupted markets. Expanding opportunity. Signals AI adoption surges Capital flows increase New entrants reshape industries",
-    bordered: true,
-    badgeText: "LOW / HIGH",
-    badgeStyles: "bg-[#EFF6FF] text-[#2563EB]", // Blue theme
-  },
-  {
-    title: "Scenario B: Controlled Stability",
+    title: "Scenario A: Controlled Stability",
     subtitle:
       "Predictable markets. Slower innovation. Operational optimization. Signals Regulatory balance Moderate growth Industry maturity",
+    bordered: true,
     badgeText: "HIGH / HIGH",
     badgeStyles: "bg-[#ECFDF5] text-[#10B981]", // Green theme
   },
+  {
+    title: "Scenario B : Acceleration Economy",
+    subtitle:
+      "Rapid growth. Disrupted markets. Expanding opportunity. Signals AI adoption surges Capital flows increase New entrants reshape industries",
+
+    badgeText: "LOW / HIGH",
+    badgeStyles: "bg-[#EFF6FF] text-[#2563EB]", // Blue theme
+  },
+
   {
     title: "Scenario C: Fractured Landscape",
     subtitle:
@@ -52,7 +54,7 @@ function ScenarioCard({ item }: { item: (typeof scenarios)[0] }) {
   return (
     <div
       onMouseMove={handleMouseMove}
-      className={`group relative flex min-h-[140px] flex-col items-center justify-center rounded-[24px] bg-white px-6 py-8 text-center transition-all duration-300 hover:shadow-xl hover:shadow-gray-200/50 overflow-hidden ${
+      className={`group relative flex min-h-[140px] flex-col items-center justify-center rounded-[24px] bg-white px-6 py-8 text-center transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:shadow-gray-200/50 overflow-hidden ${
         item.bordered
           ? "border-[3px] border-dashed border-[#E2E8F0]"
           : "border border-transparent"
@@ -98,10 +100,10 @@ function ScenarioCard({ item }: { item: (typeof scenarios)[0] }) {
 
       {/* Content */}
       <div className="relative z-10 flex flex-col items-center justify-center">
-        <h4 className="mt-4 text-[20px] font-extrabold text-[#0F172A] group-hover:text-sky-600 transition-colors duration-300">
+        <h4 className="mt-4 text-[22px] font-extrabold text-[#0F172A] group-hover:text-sky-600 transition-colors duration-300">
           {item.title}
         </h4>
-        <p className="mt-2.5 max-w-[90%] text-[14px] font-medium text-[#64748B] leading-relaxed">
+        <p className="mt-2.5 max-w-[90%] text-[14px] font-semibold text-[#64748B] leading-relaxed ">
           {item.subtitle}
         </p>
       </div>
@@ -150,19 +152,19 @@ export default function Banner() {
           transition={{ duration: 0.6 }}
         >
           {/* ── LEFT COLUMN ── */}
-          <div className="flex flex-col items-start">
-            <h1 className="text-[38px] sm:text-5xl lg:text-[58px] font-extrabold leading-[1.1] tracking-tight text-[#0F172A]">
+          <div className="flex flex-col items-start ">
+            <h1 className="text-[38px] sm:text-5xl lg:text-[58px] font-extrabold leading-[1.1] tracking-tight text-[#0F172A] text-center">
               AI-Powered Scenario
               <br />
               Planning Platform.
             </h1>
 
-            <p className="mt-6 text-[16px] sm:text-[17px] leading-relaxed text-[#5B6B82] font-medium max-w-[480px]">
+            <p className="mt-6 text-[16px] sm:text-[17px] leading-relaxed text-[#5B6B82] font-medium max-w-[480px] font-semibold text-center">
               Enabling Businesses and Organizations to Create High-Quality,
               Professional Scenario Plans with AI
             </p>
 
-            <div className="mt-9">
+            <div className="mt-9 ml-28">
               <Link
                 href="/dashboard/new-scenario"
                 className="inline-flex h-[52px] items-center justify-center rounded-xl bg-[#0F172A] px-8 text-[15px] font-bold text-white transition hover:opacity-90 shadow-xl shadow-blue-900/10 cursor-pointer"
@@ -172,7 +174,7 @@ export default function Banner() {
             </div>
 
             {/* Trusted by */}
-            <div className="mt-8 flex items-center gap-3">
+            <div className="mt-8 flex items-center gap-3 ml-28">
               <div className="flex -space-x-2.5">
                 {["bg-[#F472B6]", "bg-[#60A5FA]", "bg-[#34D399]"].map(
                   (color, i) => (
@@ -188,7 +190,7 @@ export default function Banner() {
               <p className="text-[14px] font-medium text-[#5B6B82]">
                 Trusted by{" "}
                 <span className="font-bold text-[#0F172A]">
-                  <CountUp end={2400} suffix="+" fromTop duration={3.6} />
+                  <CountUp end={100} suffix="+" fromTop duration={3.6} />
                 </span>{" "}
                 teams
               </p>
@@ -353,7 +355,7 @@ export default function Banner() {
             <div className="rounded-[24px] bg-secondary p-6 md:p-8">
               {/* Header row */}
               <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
-                <h3 className="text-[22px] font-extrabold text-primary">
+                <h3 className="text-[24px] font-extrabold text-primary">
                   Scenario Intelligence Matrix
                 </h3>
                 {/* Week / Month toggle */}
@@ -375,7 +377,7 @@ export default function Banner() {
               </div>
 
               {/* Scenario cards grid */}
-              <div className="mt-8 grid gap-5 md:grid-cols-2">
+              <div className="mt-8 grid gap-5 md:grid-cols-2 ">
                 {scenarios.map((item) => (
                   <ScenarioCard key={item.title} item={item} />
                 ))}

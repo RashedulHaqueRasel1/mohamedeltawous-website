@@ -33,11 +33,11 @@ const roles = [
     title: "Consultants",
     desc: "Deliver high-velocity intelligence projects with board-ready AI-powered outputs.",
   },
-  {
-    icon: Users,
-    title: "Startup owners",
-    desc: "Transition from static annual plans to dynamic strategic foresight operations.",
-  },
+  // {
+  //   icon: Users,
+  //   title: "Startup owners",
+  //   desc: "Transition from static annual plans to dynamic strategic foresight operations.",
+  // },
   {
     icon: Scale,
     title: "Legal Evaluators",
