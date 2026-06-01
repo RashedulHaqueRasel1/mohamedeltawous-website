@@ -6,14 +6,13 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 import ParticlesBackground from "@/components/shared/ParticlesBackground";
-import CountUp from "@/components/shared/CountUp";
 
 const brandImages = [
-  { label: "Brand 1", src: "/images/brand-1.jpg" },
+  { label: "Brand 1", src: "/images/brand-1.png" },
   { label: "Brand 2", src: "/images/brand-2.png" },
   { label: "Brand 3", src: "/images/brand-3.png" },
   { label: "Brand 4", src: "/images/brand-4.png" },
-  { label: "Brand 5", src: "/images/brand-5.webp" },
+  { label: "Brand 5", src: "/images/brand-5.png" },
 ];
 
 // Duplicate slides so loop looks continuous and never feels like it ends.
@@ -64,7 +63,7 @@ export default function BestBrands() {
 
       <div className="relative z-10 container mx-auto px-4 md:px-6">
         <div className="flex flex-col md:flex-row md:items-start justify-between gap-6 mb-12">
-          <h2 className="text-[26px] sm:text-[32px] md:text-[38px] font-extrabold text-[#0F172A] tracking-tight leading-snug max-w-2xl">
+          <h2 className="text-[26px] sm:text-[32px] md:text-[38px] font-extrabold text-[#0F172A] tracking-tight leading-snug max-w-4xl">
             The below companies are actively planning using Second Sight. Be the
             next one
           </h2>
