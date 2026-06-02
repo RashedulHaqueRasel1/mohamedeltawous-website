@@ -34,8 +34,8 @@ export default function SupportSection() {
                 </div>
                 <div>
                   <h4 className="font-bold text-slate-900">Email us</h4>
-                  <p className="text-gray-500">mohammad.eltawous@secondsight.com</p>
-                  <p className="text-gray-500">support@secondsight.com</p>
+                  <p className="text-gray-500">mohammad.eltawous@secondsight.tech</p>
+                  <p className="text-gray-500">support@secondsight.tech</p>
                 </div>
               </div>
 
