@@ -34,7 +34,7 @@ export default function SupportSection() {
                 </div>
                 <div>
                   <h4 className="font-bold text-slate-900">Email us</h4>
-                  <p className="text-gray-500">mohammad.eltawous@secondsight.tech</p>
+                  {/* <p className="text-gray-500">mohammad.eltawous@secondsight.tech</p> */}
                   <p className="text-gray-500">support@secondsight.tech</p>
                 </div>
               </div>
@@ -45,7 +45,7 @@ export default function SupportSection() {
                 </div>
                 <div>
                   <h4 className="font-bold text-slate-900">
-                    Available 24/7 for you
+                    Support response within 24 hours
                   </h4>
 
                   <p className="text-gray-500">
