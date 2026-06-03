@@ -23,7 +23,7 @@ const registerSchema = z
   .object({
     fullName: z.string().min(2, "Name is required"),
     email: z.string().email("Valid email is required"),
-    password: z.string().min(6, "Password must be at least 6 characters"),
+    password: z.string().min(8, "Password must be at least 8 characters"),
     confirmPassword: z.string(),
   })
   .refine((data) => data.password === data.confirmPassword, {
@@ -79,7 +79,7 @@ export default function AnimatedAuth() {
 
       toast.success("Login successful!");
 
-      router.push("/");
+      router.push("/dashboard/new-scenario");
     } catch (error) {
       console.error(error);
       toast.error("Something went wrong!");
@@ -195,9 +195,8 @@ export default function AnimatedAuth() {
         ====================== */}
 
         <div
-          className={`w-full lg:w-1/2 p-10 md:p-16 flex flex-col justify-center transition-opacity duration-500 ${
-            !isLogin && "lg:opacity-0"
-          }`}
+          className={`w-full lg:w-1/2 p-10 md:p-16 flex flex-col justify-center transition-opacity duration-500 ${!isLogin && "lg:opacity-0"
+            }`}
         >
           <h2 className="text-3xl font-bold text-slate-900 mb-2">
             Login to Account
@@ -239,7 +238,8 @@ export default function AnimatedAuth() {
 
             <button
               type="button"
-              className="text-sm text-slate-500 hover:text-pink-500 transition-colors"
+              onClick={() => router.push("/forgot-password")}
+              className="text-sm text-slate-500 hover:text-pink-500 transition-colors cursor-pointer"
             >
               Forgot password?
             </button>
@@ -273,9 +273,8 @@ export default function AnimatedAuth() {
         ====================== */}
 
         <div
-          className={`w-full lg:w-1/2 p-10 md:p-16 flex flex-col justify-center transition-opacity duration-500 ${
-            isLogin && "lg:opacity-0"
-          }`}
+          className={`w-full lg:w-1/2 p-10 md:p-16 flex flex-col justify-center transition-opacity duration-500 ${isLogin && "lg:opacity-0"
+            }`}
         >
           <h2 className="text-3xl font-bold text-slate-900 mb-2">
             Create Account
