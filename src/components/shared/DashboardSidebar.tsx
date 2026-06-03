@@ -9,9 +9,20 @@ import {
   FolderClock,
   Settings,
   ChevronDown,
+  LogOut,
   type LucideIcon,
 } from "lucide-react";
-import { useSession } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 const sidebarNavItems = [
   {
@@ -145,64 +156,102 @@ export default function DashboardSidebar({
   const pathname = usePathname();
   const { data: session } = useSession();
   const user = session?.user;
+  const [isLogoutOpen, setIsLogoutOpen] = useState(false);
 
   // Real or fallback user details
-  // const userRole = (user as { role?: string })?.role || "Super Admin";
-  // const userName = user?.name || "Mohamed Eltawous";
+  const userRole = (user as { role?: string })?.role || "Super Admin";
+  const userName = user?.name || "Mohamed Eltawous";
 
-  // const userInitials = userName
-  //   .split(" ")
-  //   .map((n) => n[0])
-  //   .join("")
-  //   .toUpperCase()
-  //   .slice(0, 2);
+  const userInitials = userName
+    .split(" ")
+    .map((n) => n[0])
+    .join("")
+    .toUpperCase()
+    .slice(0, 2);
+
+  const handleLogout = async () => {
+    setIsLogoutOpen(false);
+    if (onNavClick) onNavClick();
+    await signOut({ callbackUrl: "/" });
+  };
 
   return (
-    <aside className="w-full h-full flex flex-col bg-[#0f172a] text-white shadow-[1px_0_10px_rgba(0,0,0,0.1)] relative z-10">
-      {/* Navigation Links */}
-      <nav className="flex-1 px-4 py-8 space-y-2 overflow-y-auto">
-        {sidebarNavItems.map((item) => (
-          <SidebarItem
-            key={item.href}
-            item={item}
-            pathname={pathname}
-            onNavClick={onNavClick}
-          />
-        ))}
-      </nav>
+    <>
+      <aside className="w-full h-full flex flex-col bg-[#0f172a] text-white shadow-[1px_0_10px_rgba(0,0,0,0.1)] relative z-10">
+        {/* Navigation Links */}
+        <nav className="flex-1 px-4 py-8 space-y-2 overflow-y-auto">
+          {sidebarNavItems.map((item) => (
+            <SidebarItem
+              key={item.href}
+              item={item}
+              pathname={pathname}
+              onNavClick={onNavClick}
+            />
+          ))}
+        </nav>
 
-      {/* Bottom Profile and Logout Area */}
-      {/* <div className="p-6 pb-8 border-t border-white/10 flex flex-col gap-4 bg-[#0f172a]">
-        <div className="flex items-center gap-3">
-          <Avatar className="h-10 w-10 border border-white/20">
-            {user?.image ? (
-              <AvatarImage src={user.image} alt={userName} />
-            ) : (
-              <AvatarFallback className="bg-slate-700 text-white text-sm font-medium">
-                {userInitials}
-              </AvatarFallback>
-            )}
-          </Avatar>
-          <div className="flex flex-col">
-            <span className="text-white text-sm font-medium leading-none mb-1">
-              {userName}
-            </span>
-            <span className="text-slate-400 text-xs">{userRole}</span>
+        {/* Bottom Profile and Logout Area */}
+        <div className="p-6 pb-8 border-t border-white/10 flex flex-col gap-4 bg-[#0f172a]">
+          <div className="flex items-center gap-3">
+            <Avatar className="h-10 w-10 border border-white/20">
+              {user?.image ? (
+                <AvatarImage src={user.image} alt={userName} />
+              ) : (
+                <AvatarFallback className="bg-slate-700 text-white text-sm font-medium">
+                  {userInitials}
+                </AvatarFallback>
+              )}
+            </Avatar>
+            <div className="flex flex-col">
+              <span className="text-white text-sm font-medium leading-none mb-1">
+                {userName}
+              </span>
+              <span className="text-slate-400 text-xs">{userRole}</span>
+            </div>
           </div>
-        </div>
 
-        <button
-          type="button"
-          onClick={() => {
-            if (onNavClick) onNavClick();
-            signOut({ callbackUrl: "/" });
-          }}
-          className="flex flex-row items-center justify-center gap-2 w-full px-4 py-2 mt-2 rounded-lg border border-slate-700 text-red-500 hover:bg-white/5 transition-colors font-medium text-sm"
-        >
-          <LogOut size={16} />
-          Log out
-        </button>
-      </div> */}
-    </aside>
+          <button
+            type="button"
+            onClick={() => setIsLogoutOpen(true)}
+            className="flex flex-row items-center justify-center gap-2 w-full px-4 py-2 mt-2 rounded-lg border border-slate-700 text-red-500 hover:bg-white/5 transition-colors font-medium text-sm cursor-pointer"
+          >
+            <LogOut size={16} />
+            Log out
+          </button>
+        </div>
+      </aside>
+
+      <Dialog open={isLogoutOpen} onOpenChange={setIsLogoutOpen}>
+        <DialogContent className="max-w-[400px] border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 p-6 rounded-xl shadow-xl">
+          <DialogHeader className="space-y-3">
+            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-red-100 dark:bg-red-950/50">
+              <LogOut className="h-6 w-6 text-red-600 dark:text-red-400" />
+            </div>
+            <DialogTitle className="text-center text-xl font-semibold text-slate-900 dark:text-white">
+              Confirm Logout
+            </DialogTitle>
+            <DialogDescription className="text-center text-sm text-slate-500 dark:text-slate-400">
+              Are you sure you want to log out of your account? You will need to log back in to access your dashboard.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="mt-6 flex flex-col sm:flex-row gap-2 sm:justify-center">
+            <Button
+              variant="outline"
+              onClick={() => setIsLogoutOpen(false)}
+              className="w-full sm:w-auto px-5 py-2 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-900 cursor-pointer"
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={handleLogout}
+              className="w-full sm:w-auto px-5 py-2 bg-red-600 hover:bg-red-700 text-white cursor-pointer"
+            >
+              Logout
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }

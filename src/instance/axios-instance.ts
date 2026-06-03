@@ -2,6 +2,7 @@
 
 import axios, { AxiosInstance, InternalAxiosRequestConfig } from "axios";
 import { getSession } from "next-auth/react";
+import { toast } from "sonner";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL;
 
@@ -35,4 +36,19 @@ axiosInstance.interceptors.request.use(
   (error) => Promise.reject(error),
 );
 
+// Response interceptor — catch 401 globally
+axiosInstance.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (axios.isAxiosError(error) && error.response?.status === 401) {
+      const apiMsg = error.response?.data?.message;
+      toast.error(
+        apiMsg || "You are not authorized. Please log in again."
+      );
+    }
+    return Promise.reject(error);
+  },
+);
+
 export default axiosInstance;
+

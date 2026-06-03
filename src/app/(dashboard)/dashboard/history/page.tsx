@@ -1,7 +1,8 @@
 "use client";
 
-import ComingSoon from "@/components/shared/ComingSoon";
+import HistoryView from "@/features/history/component/HistoryView";
 
 export default function Page() {
-  return <ComingSoon />;
+  return <HistoryView />;
 }
+
