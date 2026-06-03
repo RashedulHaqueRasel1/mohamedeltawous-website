@@ -401,35 +401,35 @@ import { useEffect, useRef, useState, MouseEvent } from "react";
 // [Top-Left, Top-Right, Bottom-Left, Bottom-Right]
 const scenarios = [
   {
-    title: "Scenario B : Acceleration Economy",
+    title: "Scenario A : Power Concentration",
     subtitle:
-      "Rapid growth. Disrupted markets. Expanding opportunity. Signals AI adoption surges Capital flows increase New entrants reshape industries",
+      "Market consolidation. Dominant platforms. Reduced flexibility. Signals Mergers accelerate ",
     badgeText: "LOW / HIGH",
     badgeStyles: "bg-[#EFF6FF] text-[#2563EB]", // Blue theme
     bordered: true,
   },
   {
-    title: "Scenario A: Controlled Stability",
+    title: "Scenario B: Controlled Stability",
     subtitle:
       "Predictable markets. Slower innovation. Operational optimization. Signals Regulatory balance Moderate growth Industry maturity",
     badgeText: "HIGH / HIGH",
     badgeStyles: "bg-[#ECFDF5] text-[#10B981]", // Green theme
   },
   {
-    title: "Scenario C: Power Concentration",
+    title: "Scenario C: Fractured Landscape",
     subtitle:
-      "Market consolidation. Dominant platforms. Reduced flexibility. Signals Mergers accelerate",
-    badgeText: "HIGH / LOW",
+      "Volatility rises. Markets diverge. Uncertainty intensifies. Signals Geopolitical instability Consumer fragmentation Supply chain disruption ",
+    badgeText: "LOW / LOW",
     badgeStyles: "bg-[#FFF7ED] text-[#F97316]", // Orange theme
   },
   {
-    title: "Scenario D: Fractured Landscape",
+    title: "Scenario D: Acceleration Economy",
     subtitle:
-      "Volatility rises. Markets diverge. Uncertainty intensifies. Signals Geopolitical instability Consumer fragmentation Supply chain disruption",
-    badgeText: "LOW / LOW",
+      "Rapid growth. Disrupted markets. Expanding opportunity. Signals AI adoption surges Capital flows increase New entrants reshape industries",
+    badgeText: "HIGH / LOW",
     badgeStyles: "bg-[#FEF2F2] text-[#EF4444]", // Red theme
   },
-  
+
 ];
 
 function ScenarioCard({ item }: { item: (typeof scenarios)[0] }) {
@@ -445,11 +445,10 @@ function ScenarioCard({ item }: { item: (typeof scenarios)[0] }) {
   return (
     <div
       onMouseMove={handleMouseMove}
-      className={`group relative flex min-h-[160px] flex-col items-center justify-center rounded-[24px] bg-white px-6 py-8 text-center transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-gray-200/50 overflow-hidden ${
-        item.bordered
-          ? "border-[3px] border-dashed border-[#E2E8F0]"
-          : "border border-transparent"
-      }`}
+      className={`group relative flex min-h-[160px] flex-col items-center justify-center rounded-[24px] bg-white px-6 py-8 text-center transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-gray-200/50 overflow-hidden ${item.bordered
+        ? "border-[3px] border-dashed border-[#E2E8F0]"
+        : "border border-transparent"
+        }`}
     >
       <motion.div
         className="pointer-events-none absolute -inset-px opacity-0 group-hover:opacity-100 transition duration-300 z-0 blur-[20px]"
@@ -590,7 +589,7 @@ export default function Banner() {
                 className="w-full h-full object-cover aspect-video"
                 loop
                 autoPlay
-                muted
+                // muted
                 playsInline
                 onEnded={() => setPlaying(false)}
                 onPlay={() => setPlaying(true)}
@@ -621,7 +620,7 @@ export default function Banner() {
                 )}
               </button>
             </div>
-            
+
             {/* Risk Forecast */}
             <div className="absolute -top-5 -left-6 hidden sm:block z-10 opacity-90 backdrop-blur-md ">
               <div className="bg-white/80 rounded-2xl shadow-xl px-4 py-3 min-w-[150px] border border-gray-100">
@@ -739,13 +738,13 @@ export default function Banner() {
         <div className="rounded-[31px] border border-[#111827]/20 shadow-[0_32px_80px_rgba(15,23,42,0.12)] bg-white/80 overflow-hidden container mx-auto ">
           <div className="p-5 md:p-10 z-50">
             <div className="rounded-[24px] bg-secondary p-6 md:p-8">
-              
+
               {/* Header row */}
               <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
                 <h3 className="text-[24px] font-extrabold text-primary">
                   Scenario Intelligence Matrix
                 </h3>
-                
+
                 {/* Week / Month toggle */}
                 {/* <div className="inline-flex w-fit items-center rounded-xl border border-gray-200 bg-white/60 p-1.5 backdrop-blur-sm">
                   {(["Week", "Month"] as const).map((tab) => (
@@ -766,20 +765,20 @@ export default function Banner() {
 
               {/* ── METRIX CONTAINER WITH X & Y AXIS LINES ── */}
               <div className="relative mt-12 p-4">
-                
+
                 {/* Y-Axis Line (Vertical Line with Arrows) */}
                 <div className="absolute top-0 bottom-0 left-1/2 w-[2px] bg-slate-300 -translate-x-1/2 hidden md:block pointer-events-none">
                   {/* Top Arrow */}
                   <div className="absolute -top-1 left-1/2 -translate-x-1/2 border-l-4 border-r-4 border-b-[6px] border-l-transparent border-r-transparent border-b-slate-400" />
                   {/* Bottom Arrow */}
                   <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 border-l-4 border-r-4 border-t-[6px] border-l-transparent border-r-transparent border-t-slate-400" />
-                  
+
                   {/* Axis Labels (Optional: For Impact/Probability reference) */}
                   <span className="absolute -top-6 left-1/2 -translate-x-1/2 text-[11px] font-bold text-slate-400 uppercase tracking-wider whitespace-nowrap">
-                    High Impact
+                    High
                   </span>
                   <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 text-[11px] font-bold text-slate-400 uppercase tracking-wider whitespace-nowrap">
-                    Low Impact
+                    Low
                   </span>
                 </div>
 
@@ -789,13 +788,13 @@ export default function Banner() {
                   <div className="absolute left-0 top-1/2 -translate-y-1/2 border-t-4 border-b-4 border-r-[6px] border-t-transparent border-b-transparent border-r-slate-400" />
                   {/* Right Arrow */}
                   <div className="absolute right-0 top-1/2 -translate-y-1/2 border-t-4 border-b-4 border-l-[6px] border-t-transparent border-b-transparent border-l-slate-400" />
-                  
+
                   {/* Axis Labels */}
                   <span className="absolute left-2 top-2 text-[11px] font-bold text-slate-400 uppercase tracking-wider">
-                    Low Probability
+                    Low
                   </span>
                   <span className="absolute right-2 top-2  text-[11px] font-bold text-slate-400 uppercase tracking-wider">
-                    High Probability
+                    High
                   </span>
                 </div>
 
