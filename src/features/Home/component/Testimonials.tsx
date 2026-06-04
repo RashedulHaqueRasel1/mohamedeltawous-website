@@ -178,7 +178,7 @@ function TestimonialCard({
 
 export default function TestimonialGrid() {
   return (
-    <section className="px-6 pb-10">
+    <section className="px-6 py-20">
       <div className="container mx-auto">
         <div className="mb-16 text-center">
           <h2 className="flex items-center justify-center gap-3 text-3xl font-bold text-primary md:text-5xl">
