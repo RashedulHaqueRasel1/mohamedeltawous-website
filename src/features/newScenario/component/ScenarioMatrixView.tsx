@@ -179,10 +179,10 @@ const ScenarioMatrixView: React.FC = () => {
         normalizeWindtunnelData(windtunnelData, optIdx, strategicOptions),
     );
 
-const sessionId = localStorage.getItem("sessionId") || "";
+    const sessionId = localStorage.getItem("sessionId") || "";
 
     const payload: ReportPayload = {
-      sessionId,  
+      sessionId,
       workshopState: {
         company: {
           name: company.name,

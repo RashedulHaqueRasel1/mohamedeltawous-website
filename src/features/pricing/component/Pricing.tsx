@@ -240,7 +240,7 @@ export default function Pricing() {
   });
 
   return (
-    <section className="py-40 relative  dark:bg-neutral-950 overflow-hidden">
+    <section className="pt-40 pb-20 relative  dark:bg-neutral-950 overflow-hidden">
       {/* Background decorations */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-full overflow-hidden -z-10 pointer-events-none">
         <div className="absolute top-[-10%] left-[-10%] w-96 h-96 rounded-full bg-blue-500/10 blur-[120px]" />
