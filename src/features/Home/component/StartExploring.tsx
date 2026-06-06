@@ -35,7 +35,7 @@ export default function StartExploring() {
           <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
               href="/dashboard/new-scenario"
-              className="bg-primary text-white px-6 py-3 rounded-lg font-semibold hover:opacity-90 transition"
+              className="inline-flex h-[52px] items-center justify-center rounded-xl bg-[#0F172A] px-8 text-[15px] font-bold text-white transition hover:opacity-90 shadow-xl shadow-blue-900/10 cursor-pointer"
             >
               Start Scenario Analysis
             </Link>
