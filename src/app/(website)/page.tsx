@@ -6,7 +6,7 @@ import Strategic from "@/features/Home/component/Strategic";
 import SupportSection from "@/features/Home/component/SupportSection";
 import WhoShouldUse from "@/features/Home/component/WhoShouldUse";
 // import BestBrands from "@/features/Home/component/BestBrands";
-// import TestimonialGrid from "@/features/Home/component/Testimonials";
+import TestimonialGrid from "@/features/Home/component/Testimonials";
 
 export default function page() {
   return (
@@ -27,20 +27,20 @@ export default function page() {
         <WhoShouldUse />
       </SectionReveal>
 
-      {/* <SectionReveal delay={0.18}> */}
-      {/* <BestBrands /> */}
-      {/* <TestimonialGrid /> */}
-      {/* </SectionReveal> */}
-
-
-
-      <SectionReveal delay={0.26}>
-        <SupportSection />
+      <SectionReveal delay={0.18}>
+        {/* <BestBrands /> */}
+        <TestimonialGrid />
       </SectionReveal>
 
       <SectionReveal delay={0.22}>
         <StartExploring />
       </SectionReveal>
+
+      <SectionReveal delay={0.26}>
+        <SupportSection />
+      </SectionReveal>
+
+
     </div>
   );
 }
