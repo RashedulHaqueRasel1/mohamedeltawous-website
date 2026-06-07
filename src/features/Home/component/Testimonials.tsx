@@ -1,204 +1,67 @@
-
 "use client";
 
-import * as React from "react";
-import {
-  motion,
-  useMotionTemplate,
-  useMotionValue,
-} from "framer-motion";
-import { Star } from "lucide-react";
-import { MouseEvent } from "react";
-
-const testimonials = [
-  {
-    id: 1,
-    brand: "hulu",
-    rating: "4.9",
-    name: "Kate Davis",
-    username: "friable_captain_8",
-    review:
-      "The progress tracker is fantastic. It's motivating to see how much I've improved over time. The app has a great mix of",
-  },
-  {
-    id: 2,
-    brand: "HBOMax",
-    rating: "3.2",
-    name: "Martin Kazlauskas",
-    username: "sartorial_statue_59",
-    review:
-      "The progress tracker is fantastic. It's motivating to see how much I've improved over time. The app has a great mix of",
-  },
-  {
-    id: 3,
-    brand: "Disney+",
-    rating: "4.9",
-    name: "Sanjay Sharma",
-    username: "voracious_rainbows_68",
-    review:
-      "The progress tracker is fantastic. It's motivating to see how much I've improved over time. The app has a great mix of",
-  },
-  {
-    id: 4,
-    brand: "STARZ",
-    rating: "3.2",
-    name: "Tawanna Afumba",
-    username: "intransigent_toejam_15",
-    review:
-      "The progress tracker is fantastic. It's motivating to see how much I've improved over time. The app has a great mix of",
-  },
-  {
-    id: 5,
-    brand: "Vix",
-    rating: "4.9",
-    name: "Larry King",
-    username: "pendulous_unicorn_46",
-    review:
-      "The progress tracker is fantastic. It's motivating to see how much I've improved over time. The app has a great mix of",
-  },
-  {
-    id: 6,
-    brand: "prime video",
-    rating: "3.2",
-    name: "Fatima Mohamed",
-    username: "salubrious_artist_72",
-    review:
-      "The progress tracker is fantastic. It's motivating to see how much I've improved over time. The app has a great mix of",
-  },
-];
-
-function TestimonialCard({
-  item,
-}: {
-  item: (typeof testimonials)[0];
-}) {
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-
-  function handleMouseMove({
-    currentTarget,
-    clientX,
-    clientY,
-  }: MouseEvent) {
-    const { left, top } = currentTarget.getBoundingClientRect();
-
-    mouseX.set(clientX - left);
-    mouseY.set(clientY - top);
-  }
-
-  return (
-    <motion.div
-      whileHover={{
-        rotate: 1,
-        scale: 1.02,
-        y: -10,
-      }}
-      onMouseMove={handleMouseMove}
-      transition={{
-        type: "spring",
-        stiffness: 300,
-        damping: 20,
-      }}
-      className="group relative overflow-hidden rounded-[16px] border border-gray-100 bg-white p-8 shadow-sm hover:shadow-md"
-    >
-      {/* Glow Background */}
-      <motion.div
-        className="pointer-events-none absolute -inset-px rounded-[16px] opacity-0 transition duration-300 group-hover:opacity-100"
-        style={{
-          background: useMotionTemplate`
-            radial-gradient(
-              350px circle at ${mouseX}px ${mouseY}px,
-              rgba(0, 211, 169, 0.15),
-              transparent 80%
-            )
-          `,
-        }}
-      />
-
-      {/* Cursor Glow */}
-      <motion.div
-        className="pointer-events-none absolute -inset-px rounded-[16px] opacity-0 transition duration-300 group-hover:opacity-100"
-        style={{
-          background: useMotionTemplate`
-            radial-gradient(
-              120px circle at ${mouseX}px ${mouseY}px,
-              #0ea5e9,
-              transparent 80%
-            )
-          `,
-          maskImage: useMotionTemplate`
-            radial-gradient(
-              120px circle at ${mouseX}px ${mouseY}px,
-              black,
-              transparent 80%
-            )
-          `,
-          WebkitMaskImage: useMotionTemplate`
-            radial-gradient(
-              120px circle at ${mouseX}px ${mouseY}px,
-              black,
-              transparent 80%
-            )
-          `,
-        }}
-      />
-
-      <div className="relative z-10">
-        <div className="mb-6 flex items-center justify-between">
-          <span className="text-2xl font-bold uppercase italic tracking-tight text-[#0ea5e9]">
-            {item.brand}
-          </span>
-
-          <div className="flex items-center gap-2">
-            <span className="font-bold text-[#1E293B]">
-              {item.rating}
-            </span>
-
-            <Star className="h-5 w-5 fill-[#0f172a] text-[#0f172a]" />
-          </div>
-        </div>
-
-        <p className="mb-8 text-[15px] font-semibold leading-relaxed text-[#475569]">
-          {item.review}
-        </p>
-
-        <div>
-          <h4 className="text-xl font-bold text-[#1E293B]">
-            {item.name}
-          </h4>
-
-          <p className="text-sm font-medium text-[#475569]">
-            {item.username}
-          </p>
-        </div>
-      </div>
-    </motion.div>
-  );
-}
+import Image from "next/image";
+import Link from "next/link";
 
 export default function TestimonialGrid() {
   return (
-    <section className="px-6 py-20">
-      <div className="container mx-auto">
-        <div className="mb-16 text-center">
-          <h2 className="flex items-center justify-center gap-3 text-3xl font-bold text-primary md:text-5xl">
-            Our Trusted Clients
-          </h2>
+    <section className="relative px-6 py-20  overflow-hidden">
+      {/* Background Glow */}
+      <div className="absolute inset-0 -z-10">
+        <div className="absolute top-[-100px] left-1/2 h-[300px] w-[300px] -translate-x-1/2 rounded-full bg-primary/10 blur-3xl" />
+      </div>
 
-          <p className="mx-auto mt-6 max-w-2xl text-sm font-semibold leading-relaxed text-gray-500 md:text-base">
-            Our mission is to drive progress and enhance the lives of our
-            customers by delivering superior products and services that exceed
-            expectations.
-          </p>
-        </div>
+      {/* 👇 FIXED WIDTH HERE */}
+      <div className="max-w-5xl mx-auto">
+        <div className="flex flex-col items-center gap-12 md:flex-row md:items-center">
 
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {testimonials.map((item) => (
-            <TestimonialCard key={item.id} item={item} />
-          ))}
+          {/* Left Side */}
+          <div className="md:w-1/2 text-center md:text-left">
+            <span className="inline-block rounded-full bg-primary/10 px-4 py-1 text-sm font-medium text-primary">
+              Trusted by Clients
+            </span>
+            {/* 
+            <h2 className="mt-4 text-3xl font-bold text-gray-900 md:text-5xl leading-tight">
+              Our Trusted Clients
+            </h2> */}
+
+            <p className="mt-6 max-w-xl text-sm md:text-[24px] font-semibold text-block leading-relaxed">
+              Check our testimonials from our users working in top positions in their corporates
+            </p>
+
+            <div className="mt-8 flex justify-center md:justify-start gap-6">
+              <div>
+                <p className="text-2xl font-bold text-primary">100+</p>
+                <p className="text-xs text-gray-500">Happy Clients</p>
+              </div>
+              <div>
+                <p className="text-2xl font-bold text-primary">24/7</p>
+                <p className="text-xs text-gray-500">Support</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Right Side */}
+          <div className="md:w-1/2 flex justify-center">
+            <div className="relative">
+              <div className="absolute -inset-3 rounded-2xl bg-primary/20 blur-xl" />
+
+              <Link href="https://www.trustpilot.com/">
+                <div className="relative rounded-2xl overflow-hidden shadow-xl border border-gray-100 bg-white">
+                  <Image
+                    src="/images/trust.jpeg"
+                    alt="clients"
+                    width={250}
+                    height={250}
+                    className="object-cover hover:scale-105 transition-transform duration-500"
+                  />
+                </div>
+              </Link>
+            </div>
+          </div>
+
         </div>
       </div>
     </section>
   );
 }
-
