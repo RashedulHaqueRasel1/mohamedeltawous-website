@@ -349,8 +349,8 @@ export default function Banner() {
             <div className="rounded-[24px] bg-secondary py-4 px-3  md:p-8">
 
               {/* Header row */}
-              <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
-                <h3 className="text-[24px] font-extrabold text-primary">
+              <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between ">
+                <h3 className="text-[24px] p-4 font-extrabold text-primary">
                   Scenario Intelligence Matrix
                 </h3>
 
