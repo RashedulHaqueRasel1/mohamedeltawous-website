@@ -143,19 +143,20 @@ function AnimatedAuth() {
 
       toast.success("Account created successfully!");
 
-      // Auto login after registration
-      const loginRes = await signIn("credentials", {
-        email: values.email,
-        password: values.password,
-        redirect: false,
-      });
-
-      if (loginRes?.error) {
-        setIsLogin(true);
-        return;
+      const accessToken = data?.data?.accessToken;
+      if (!accessToken) {
+        throw new Error("Verification token missing from server response");
       }
 
-      router.push(safeCallbackUrl || "/dashboard/new-scenario");
+      localStorage.setItem("registration_verification_token", accessToken);
+      localStorage.setItem("registration_verification_email", values.email);
+
+      const params = new URLSearchParams({ email: values.email });
+      if (safeCallbackUrl) {
+        params.set("callbackUrl", safeCallbackUrl);
+      }
+
+      router.push(`/verify-email?${params.toString()}`);
     } catch (error) {
       toast.error(
         error instanceof Error ? error.message : "Registration failed",
@@ -166,9 +167,9 @@ function AnimatedAuth() {
   };
 
   return (
-    <section className="min-h-screen bg-slate-50 flex items-center justify-center p-6">
+    <section className="min-h-screen bg-slate-50 flex items-center justify-center px-4 py-6 sm:p-6">
       {/* Main Container */}
-      <div className="relative w-full max-w-6xl bg-white rounded-[40px] shadow-2xl overflow-hidden min-h-[700px] flex border border-slate-100">
+      <div className="relative w-full max-w-6xl bg-white rounded-3xl lg:rounded-[40px] shadow-2xl overflow-hidden min-h-0 lg:min-h-[700px] flex border border-slate-100">
         {/* Sliding Overlay Section */}
         <motion.div
           animate={{ x: isLogin ? "100%" : "0%" }}
@@ -209,14 +210,16 @@ function AnimatedAuth() {
         ====================== */}
 
         <div
-          className={`w-full lg:w-1/2 p-10 md:p-16 flex flex-col justify-center transition-opacity duration-500 ${!isLogin && "lg:opacity-0"
+          className={`w-full lg:w-1/2 px-5 py-8 sm:p-10 md:p-16 flex-col justify-center transition-opacity duration-500 ${isLogin ? "flex" : "hidden lg:flex lg:opacity-0"
             }`}
         >
-          <h2 className="text-3xl font-bold text-slate-900 mb-2">
+          <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-2">
             Login to Account
           </h2>
 
-          <p className="text-slate-500 mb-8">Use your email for login</p>
+          <p className="text-sm sm:text-base text-slate-500 mb-6 sm:mb-8">
+            Use your email for login
+          </p>
 
           <form
             onSubmit={loginForm.handleSubmit(handleLogin)}
@@ -276,7 +279,7 @@ function AnimatedAuth() {
 
           <button
             onClick={toggleForm}
-            className="lg:hidden mt-6 text-pink-600 font-bold"
+            className="lg:hidden mt-6 text-[#0F172A] font-bold text-sm"
           >
             New here? Sign Up
           </button>
@@ -287,14 +290,16 @@ function AnimatedAuth() {
         ====================== */}
 
         <div
-          className={`w-full lg:w-1/2 p-10 md:p-16 flex flex-col justify-center transition-opacity duration-500 ${isLogin && "lg:opacity-0"
+          className={`w-full lg:w-1/2 px-5 py-8 sm:p-10 md:p-16 flex-col justify-center transition-opacity duration-500 ${isLogin ? "hidden lg:flex lg:opacity-0" : "flex"
             }`}
         >
-          <h2 className="text-3xl font-bold text-slate-900 mb-2">
+          <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-2">
             Create Account
           </h2>
 
-          <p className="text-slate-500 mb-8">Join our community today</p>
+          <p className="text-sm sm:text-base text-slate-500 mb-6 sm:mb-8">
+            Join our community today
+          </p>
 
           <form
             onSubmit={registerForm.handleSubmit(handleRegister)}
@@ -374,7 +379,7 @@ function AnimatedAuth() {
 
           <button
             onClick={toggleForm}
-            className="lg:hidden mt-6 text-pink-600 font-bold"
+            className="lg:hidden mt-6 text-[#0F172A] font-bold text-sm"
           >
             Have an account? Log In
           </button>
@@ -422,7 +427,7 @@ const AuthInput = React.forwardRef<HTMLInputElement, AuthInputProps>(
           ref={ref}
           type={type}
           {...props}
-          className="w-full pl-12 pr-14 py-4 rounded-[16px] border border-black/10 bg-white focus:ring-1 focus:ring-black outline-none transition-all"
+          className="w-full pl-11 pr-12 py-3.5 sm:pl-12 sm:pr-14 sm:py-4 rounded-[14px] sm:rounded-[16px] border border-black/10 bg-white text-sm sm:text-base focus:ring-1 focus:ring-black outline-none transition-all"
         />
 
         {setShowPassword && (
