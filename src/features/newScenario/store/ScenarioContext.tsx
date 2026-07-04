@@ -16,10 +16,12 @@ import {
   ScenarioResult,
   AxesData,
   WindtunnelResult,
-  PredeterminedItem,
-  UncertaintyItem,
 } from "../types/newScenario.types";
-import { saveScenarioState, clearScenarioState } from "./scenarioStorage";
+import {
+  saveScenarioState,
+  loadScenarioState,
+  clearScenarioState,
+} from "./scenarioStorage";
 
 const emptyCompany: CompanyInfo = {
   projectTitle: "",
@@ -35,40 +37,65 @@ const defaultStrategicOptions: string[] = [];
 
 const ScenarioContext = createContext<ScenarioState | undefined>(undefined);
 
-export const ScenarioProvider: React.FC<{ children: ReactNode }> = ({
-  children,
-}) => {
-  const [currentStep, setCurrentStep] = useState(1);
-  const [company, setCompany] = useState<CompanyInfo>({ ...emptyCompany });
-  const [forces, setForces] = useState<DrivingForce[]>([]);
-  const [movingFactors, setMovingFactors] = useState<MovingFactor[]>([]);
+export const ScenarioProvider: React.FC<{
+  children: ReactNode;
+  inviteToken?: string;
+}> = ({ children, inviteToken }) => {
+  const isInviteMode = Boolean(inviteToken);
+  const [initialState] = useState(() =>
+    isInviteMode ? null : loadScenarioState(),
+  );
+  const [currentStep, setCurrentStep] = useState(
+    isInviteMode ? 3 : initialState?.currentStep || 1,
+  );
+  const [company, setCompany] = useState<CompanyInfo>(
+    initialState?.company || { ...emptyCompany },
+  );
+  const [forces, setForces] = useState<DrivingForce[]>(
+    initialState?.forces || [],
+  );
+  const [movingFactors, setMovingFactors] = useState<MovingFactor[]>(
+    initialState?.movingFactors || [],
+  );
   const [classification, setClassification] =
-    useState<ScenarioState["classification"]>(null);
-  const [axes, setAxes] = useState<AxesData | null>(null);
-  const [scenarios, setScenarios] = useState<ScenarioResult[] | null>(null);
+    useState<ScenarioState["classification"]>(
+      initialState?.classification || null,
+    );
+  const [axes, setAxes] = useState<AxesData | null>(
+    initialState?.axes || null,
+  );
+  const [scenarios, setScenarios] = useState<ScenarioResult[] | null>(
+    initialState?.scenarios || null,
+  );
   const [strategicOptions, setStrategicOptions] = useState<string[]>(
-    defaultStrategicOptions,
+    initialState?.strategicOptions || defaultStrategicOptions,
   );
   const [windtunnelData, setWindtunnelData] = useState<WindtunnelResult | null>(
-    null,
+    initialState?.windtunnelData || null,
   );
   const [conversationHistory, setConversationHistory] = useState<
     ScenarioState["conversationHistory"]
-  >([]);
+  >(initialState?.conversationHistory || []);
   const [isClassificationModalOpen, setIsClassificationModalOpen] =
     useState(false);
   const [isAxesModalOpen, setIsAxesModalOpen] = useState(false);
 
-  // Clear localStorage on fresh mount (i.e., page refresh)
   useEffect(() => {
-    console.log(
-      "New Scenario Workshop initialized. Clearing localStorage as per requirements.",
-    );
-    clearScenarioState();
-  }, []);
+    if (inviteToken) {
+      localStorage.setItem("inviteToken", inviteToken);
+    } else {
+      localStorage.removeItem("inviteToken");
+    }
+
+    return () => {
+      localStorage.removeItem("inviteToken");
+    };
+  }, [inviteToken]);
 
   // Whenever state changes, sync to localStorage to "persist across function calls"
   useEffect(() => {
+    if (isInviteMode) return;
+
     saveScenarioState({
       currentStep,
       company,
@@ -92,9 +119,13 @@ export const ScenarioProvider: React.FC<{ children: ReactNode }> = ({
     strategicOptions,
     windtunnelData,
     conversationHistory,
+    isInviteMode,
   ]);
 
-  const setStep = useCallback((step: number) => setCurrentStep(step), []);
+  const setStep = useCallback(
+    (step: number) => setCurrentStep(isInviteMode ? 3 : step),
+    [isInviteMode],
+  );
   const setClassificationModal = useCallback(
     (isOpen: boolean) => setIsClassificationModalOpen(isOpen),
     [],
@@ -166,7 +197,7 @@ export const ScenarioProvider: React.FC<{ children: ReactNode }> = ({
   );
 
   const resetStore = useCallback(() => {
-    setCurrentStep(1);
+    setCurrentStep(isInviteMode ? 3 : 1);
     setCompany({ ...emptyCompany });
     setForces([]);
     setMovingFactors([]);
@@ -179,9 +210,15 @@ export const ScenarioProvider: React.FC<{ children: ReactNode }> = ({
     setIsClassificationModalOpen(false);
     setIsAxesModalOpen(false);
     clearScenarioState();
-  }, []);
+    if (!isInviteMode) {
+      localStorage.removeItem("sessionId");
+      localStorage.removeItem("workshopAnalysisId");
+    }
+  }, [isInviteMode]);
 
   const value: ScenarioState = {
+    inviteToken,
+    isInviteMode,
     currentStep,
     company,
     forces,
