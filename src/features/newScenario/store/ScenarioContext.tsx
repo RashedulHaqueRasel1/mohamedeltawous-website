@@ -92,6 +92,18 @@ export const ScenarioProvider: React.FC<{
     };
   }, [inviteToken]);
 
+  useEffect(() => {
+    if (inviteToken) {
+      localStorage.setItem("inviteToken", inviteToken);
+    } else {
+      localStorage.removeItem("inviteToken");
+    }
+
+    return () => {
+      localStorage.removeItem("inviteToken");
+    };
+  }, [inviteToken]);
+
   // Whenever state changes, sync to localStorage to "persist across function calls"
   useEffect(() => {
     if (isInviteMode) return;
