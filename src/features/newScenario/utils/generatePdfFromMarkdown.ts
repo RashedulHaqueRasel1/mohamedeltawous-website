@@ -390,7 +390,7 @@ export async function generatePdfFromMarkdown(
   try {
     logoImg = await new Promise((resolve, reject) => {
       const img = new Image();
-      img.src = "/images/logo.png";
+      img.src = "/images/logo1.jpeg";
       img.onload = () => resolve(img);
       img.onerror = () => resolve(null);
     });

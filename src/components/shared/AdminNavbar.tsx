@@ -34,7 +34,7 @@ export default function AdminNavbar({
         <div className="w-[280px] h-full flex items-center justify-center shrink-0">
           <Link href="/admin/dashboard-overview" className="flex items-center">
             <Image
-              src="/images/logo.png"
+              src="/images/logo1.jpeg"
               alt="Second Sight"
               width={140}
               height={100}
