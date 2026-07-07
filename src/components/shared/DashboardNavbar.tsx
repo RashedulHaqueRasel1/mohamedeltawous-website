@@ -20,11 +20,11 @@ export default function DashboardNavbar({
 
   const userInitials = user?.name
     ? user.name
-        .split(" ")
-        .map((n) => n[0])
-        .join("")
-        .toUpperCase()
-        .slice(0, 2)
+      .split(" ")
+      .map((n) => n[0])
+      .join("")
+      .toUpperCase()
+      .slice(0, 2)
     : user?.email?.slice(0, 2).toUpperCase() || "??";
 
   return (
@@ -34,7 +34,7 @@ export default function DashboardNavbar({
         <div className="w-[280px] h-full flex items-center justify-center shrink-0">
           <Link href="/" className="flex items-center">
             <Image
-              src="/images/logo.png"
+             src="/images/logo1.jpeg"
               alt="Second Sight"
               width={140}
               height={100}
