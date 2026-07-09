@@ -11,6 +11,7 @@ import {
   useSendScenarioInvite,
   useSubmitGuestFactor,
   useWorkshopBySession,
+  useEditGuestFactor,
 } from "../hooks/useNewScenario";
 import ForceClassificationView from "./ForceClassificationView";
 import ScenarioResultView from "./ScenarioResultView";
@@ -43,6 +44,7 @@ import {
   AlertTriangle,
   RefreshCw,
   Users,
+  Pencil,
 } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 
@@ -136,8 +138,14 @@ function NewScenarioContent() {
     useSubmitGuestFactor();
   const { mutateAsync: fetchWorkshopBySession, isPending: isFetchingWorkshop } =
     useWorkshopBySession();
+  const { mutateAsync: editGuestFactorMutate, isPending: isEditingGuestFactor } =
+    useEditGuestFactor();
 
   const [dfError, setDfError] = useState("");
+  const [editingGuestEmail, setEditingGuestEmail] = useState<string | null>(null);
+  const [editingOldFactor, setEditingOldFactor] = useState<string>("");
+  const [editingNewFactor, setEditingNewFactor] = useState<string>("");
+  const [isEditGuestFactorDialogOpen, setIsEditGuestFactorDialogOpen] = useState(false);
   const [customCatInput, setCustomCatInput] = useState("");
   const [isInviteDialogOpen, setIsInviteDialogOpen] = useState(false);
   const [inviteEmail, setInviteEmail] = useState("");
@@ -372,6 +380,41 @@ function NewScenarioContent() {
           : "Failed to send invitation.";
 
       toast.error(message);
+    }
+  };
+
+  const handleSaveEditedGuestFactor = async () => {
+    if (!workshopSessionId || !editingGuestEmail || !editingNewFactor.trim()) return;
+
+    try {
+      await editGuestFactorMutate({
+        sessionId: workshopSessionId,
+        data: {
+          email: editingGuestEmail,
+          oldFactor: editingOldFactor,
+          newFactor: editingNewFactor.trim(),
+        },
+      });
+
+      toast.success("Guest factor updated successfully.");
+      setIsEditGuestFactorDialogOpen(false);
+
+      // Refresh guest contributions to show the updated list
+      await handleRefreshGuestContributions();
+
+      // Also update the selected keys if the old factor was selected
+      const oldKey = getGuestForceKey(editingGuestEmail, editingOldFactor);
+      const newKey = getGuestForceKey(editingGuestEmail, editingNewFactor.trim());
+      
+      setSelectedGuestForceKeys((current) => {
+        if (current.includes(oldKey)) {
+          return current.map((k) => (k === oldKey ? newKey : k));
+        }
+        return current;
+      });
+    } catch (err: unknown) {
+      console.error(err);
+      toast.error("Failed to update guest factor.");
     }
   };
 
@@ -1071,9 +1114,9 @@ function NewScenarioContent() {
                                   selectedGuestForceKeys.includes(key);
 
                                 return (
-                                  <label
+                                  <div
                                     key={key}
-                                    className="flex cursor-pointer items-start gap-3 rounded-lg bg-slate-50 p-3 text-sm font-medium leading-6 text-slate-700"
+                                    className="flex items-start gap-3 rounded-lg bg-slate-50 p-3 text-sm font-medium leading-6 text-slate-700 w-full"
                                   >
                                     <Checkbox
                                       checked={isChecked}
@@ -1085,11 +1128,30 @@ function NewScenarioContent() {
                                         )
                                       }
                                       className="mt-1"
+                                      id={`checkbox-${key}`}
                                     />
-                                    <span className="min-w-0 flex-1 whitespace-pre-wrap break-words">
+                                    <label
+                                      htmlFor={`checkbox-${key}`}
+                                      className="min-w-0 flex-1 whitespace-pre-wrap break-words cursor-pointer"
+                                    >
                                       {force}
-                                    </span>
-                                  </label>
+                                    </label>
+                                    <button
+                                      type="button"
+                                      onClick={(e) => {
+                                        e.preventDefault();
+                                        e.stopPropagation();
+                                        setEditingGuestEmail(entry.email);
+                                        setEditingOldFactor(force);
+                                        setEditingNewFactor(force);
+                                        setIsEditGuestFactorDialogOpen(true);
+                                      }}
+                                      className="p-1 hover:bg-slate-200 rounded text-slate-400 hover:text-slate-700 transition self-center cursor-pointer shrink-0"
+                                      title="Edit guest factor"
+                                    >
+                                      <Pencil className="h-4 w-4" />
+                                    </button>
+                                  </div>
                                 );
                               })}
                             </div>
@@ -1384,6 +1446,64 @@ function NewScenarioContent() {
               ) : (
                 "Send Invite"
               )}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog
+        open={isEditGuestFactorDialogOpen}
+        onOpenChange={setIsEditGuestFactorDialogOpen}
+      >
+        <DialogContent className="max-w-[460px] bg-white p-6">
+          <DialogHeader>
+            <DialogTitle>Edit Guest Factor</DialogTitle>
+            <DialogDescription>
+              Correct or edit the factor submitted by {editingGuestEmail}.
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-4 py-4">
+            <div>
+              <span className="text-xs font-bold uppercase tracking-widest text-slate-400 block mb-1">
+                Original Text
+              </span>
+              <p className="text-sm bg-slate-50 text-slate-650 p-3 rounded-lg border border-slate-100 italic break-words">
+                {editingOldFactor}
+              </p>
+            </div>
+            <div>
+              <label
+                htmlFor="editNewFactor"
+                className="block text-xs font-bold uppercase tracking-widest text-slate-400 mb-2"
+              >
+                Edited Text
+              </label>
+              <textarea
+                id="editNewFactor"
+                rows={4}
+                value={editingNewFactor}
+                onChange={(e) => setEditingNewFactor(e.target.value)}
+                className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm font-medium outline-none transition focus:border-[#0F172A]"
+              />
+            </div>
+          </div>
+
+          <DialogFooter>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => setIsEditGuestFactorDialogOpen(false)}
+            >
+              Cancel
+            </Button>
+            <Button
+              type="button"
+              onClick={handleSaveEditedGuestFactor}
+              disabled={isEditingGuestFactor || !editingNewFactor.trim()}
+              className="bg-[#0F172A] text-white hover:bg-[#0F172A]/90"
+            >
+              {isEditingGuestFactor ? "Saving..." : "Save Changes"}
             </Button>
           </DialogFooter>
         </DialogContent>
