@@ -367,7 +367,7 @@ export default function HistoryView() {
                 <span className="font-semibold text-slate-800 dark:text-slate-200">{endIndex}</span> of{" "}
                 <span className="font-semibold text-slate-800 dark:text-slate-200">{totalItems}</span> entries
               </div>
-              
+
               <div className="flex items-center gap-4">
                 <div className="flex items-center gap-1.5">
                   <span className="text-[11px] text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider">Show</span>
@@ -392,7 +392,7 @@ export default function HistoryView() {
                   >
                     <ChevronLeft className="h-4 w-4" />
                   </button>
-                  
+
                   {Array.from({ length: totalPages }).map((_, idx) => {
                     const pageNum = idx + 1;
                     if (
@@ -404,11 +404,10 @@ export default function HistoryView() {
                         <button
                           key={pageNum}
                           onClick={() => setCurrentPage(pageNum)}
-                          className={`w-8 h-8 rounded-md text-xs font-bold transition-all cursor-pointer ${
-                            currentPage === pageNum
-                              ? "bg-slate-950 dark:bg-white text-white dark:text-slate-950 shadow-xs"
-                              : "border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800"
-                          }`}
+                          className={`w-8 h-8 rounded-md text-xs font-bold transition-all cursor-pointer ${currentPage === pageNum
+                            ? "bg-slate-950 dark:bg-white text-white dark:text-slate-950 shadow-xs"
+                            : "border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800"
+                            }`}
                         >
                           {pageNum}
                         </button>
@@ -572,6 +571,19 @@ export default function HistoryView() {
                           </div>
                         </div>
 
+                        {/* Focal Question */}
+                        {selectedItem.company?.focalQuestion && (
+                          <div className="bg-gradient-to-r from-blue-50/50 to-indigo-50/30 dark:from-slate-900/60 dark:to-slate-900/30 p-6 rounded-2xl border border-blue-100/30 dark:border-slate-800 shadow-xs">
+                            <h4 className="text-xs font-black uppercase tracking-wider mb-3 flex items-center gap-2">
+                              <HelpCircle className="h-4.5 w-4.5" />
+                              Strategic Question
+                            </h4>
+                            <p className="text-base font-black text-slate-900 dark:text-white leading-relaxed">
+                              &ldquo;{selectedItem.company.focalQuestion}&rdquo;
+                            </p>
+                          </div>
+                        )}
+
                         {/* Forces lists */}
                         {selectedItem.forces && selectedItem.forces.length > 0 && (
                           <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-100 dark:border-slate-800/80 shadow-xs">
@@ -703,15 +715,43 @@ export default function HistoryView() {
                             <h4 className="text-xs font-black uppercase tracking-wider text-slate-400 mb-6">
                               Derived Scenario Quadrants
                             </h4>
+
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                               {Object.entries(selectedItem.axes.scenarios).map(([key, scenarioObj]) => {
                                 const details = scenarioObj as { name: string; summary: string };
+
+                                const quadrantLabel: Record<string, string> = {
+                                  topRight: "High/Low",
+                                  topLeft: "High/High",
+                                  bottomLeft: "Low/Low",
+                                  bottomRight: "Low/High",
+                                };
+
+                                const quadrantCombination: Record<string, string> = {
+                                  topRight: "A2+B2",
+                                  topLeft: "A2+B1",
+                                  bottomLeft: "A1+B1",
+                                  bottomRight: "A1+B2",
+                                };
+
                                 return (
-                                  <div key={key} className="p-5 bg-slate-50/50 dark:bg-slate-900/50 rounded-xl border border-slate-100 dark:border-slate-800/80">
+                                  <div
+                                    key={key}
+                                    className="p-5 bg-slate-50/50 dark:bg-slate-900/50 rounded-xl border border-slate-100 dark:border-slate-800/80"
+                                  >
                                     <div className="flex justify-between items-center">
-                                      <span className="text-[9px] font-black uppercase tracking-widest text-slate-400">{key}</span>
+                                      <span className="text-[9px] font-black tracking-widest text-slate-400 flex items-center gap-1.5">
+                                        <span className="px-1.5 py-0.5 bg-slate-100 dark:bg-slate-800 rounded font-mono text-[8px] text-slate-500 dark:text-slate-400 border border-slate-200/40 dark:border-slate-700/40">
+                                          {quadrantCombination[key]}
+                                        </span>
+                                        {quadrantLabel[key] || key}
+                                      </span>
                                     </div>
-                                    <h5 className="text-base font-black text-slate-900 dark:text-white mt-1">{details.name}</h5>
+
+                                    <h5 className="text-base font-black text-slate-900 dark:text-white mt-1">
+                                      {details.name}
+                                    </h5>
+
                                     <p className="text-xs text-slate-500 dark:text-slate-400 font-semibold mt-2 leading-relaxed">
                                       {details.summary}
                                     </p>
@@ -733,6 +773,10 @@ export default function HistoryView() {
                               <h4 className="text-lg font-black text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
                                 <span className="text-xs bg-slate-100 dark:bg-slate-800 text-slate-500 px-2 py-0.5 rounded font-mono">
                                   {s.combination || `Scenario ${idx + 1}`}
+                                  {s.combination === "A1+B1" && " (Low/Low)"}
+                                  {s.combination === "A1+B2" && " (Low/High)"}
+                                  {s.combination === "A2+B1" && " (High/High)"}
+                                  {s.combination === "A2+B2" && " (High/Low)"}
                                 </span>
                                 {s.name}
                               </h4>

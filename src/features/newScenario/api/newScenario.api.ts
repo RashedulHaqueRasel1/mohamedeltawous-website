@@ -224,3 +224,25 @@ export const exportReport = async (
     throw error;
   }
 };
+
+export type EditGuestFactorPayload = {
+  email?: string;
+  inviteId?: string;
+  oldFactor: string;
+  newFactor: string;
+};
+
+export const editGuestFactor = async ({
+  sessionId,
+  data,
+}: {
+  sessionId: string;
+  data: EditGuestFactorPayload;
+}): Promise<{ success: boolean; message: string }> => {
+  const response = await axiosInstance.put(
+    `/workshop/guest/factor/${sessionId}`,
+    data
+  );
+  return response.data;
+};
+
