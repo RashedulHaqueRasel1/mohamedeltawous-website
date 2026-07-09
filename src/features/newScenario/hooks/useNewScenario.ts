@@ -14,6 +14,8 @@ import {
   InviteResponse,
   SendScenarioInvitePayload,
   WorkshopBySessionResponse,
+  editGuestFactor,
+  EditGuestFactorPayload,
 } from "../api/newScenario.api";
 import {
   AxesPayload,
@@ -130,3 +132,16 @@ export const useExportReport = () => {
     mutationFn: (data: ReportPayload) => exportReport(data),
   });
 };
+
+// PUT /workshop/guest/factor/:sessionId
+
+export const useEditGuestFactor = () => {
+  return useMutation<
+    { success: boolean; message: string },
+    Error,
+    { sessionId: string; data: EditGuestFactorPayload }
+  >({
+    mutationFn: ({ sessionId, data }) => editGuestFactor({ sessionId, data }),
+  });
+};
+

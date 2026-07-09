@@ -19,6 +19,8 @@ export interface HistoryItem {
     name: string;
     industry: string;
     summary: string;
+    focalQuestion?: string;
+    horizonYear?: string;
   } | null;
   forces?: string[];
   pdfUrl?: string | null;

@@ -137,7 +137,7 @@ export default function AdminDashboardOverview() {
 
   return (
 
-    <div className="p-4 md:p-6 lg:p-8 w-full max-w-7xl mx-auto space-y-8">
+    <div className="p-4 md:p-6 lg:p-8 w-full Container mx-auto space-y-8">
 
       {/* Page Header */}
 

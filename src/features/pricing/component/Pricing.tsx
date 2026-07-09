@@ -1,6 +1,6 @@
 "use client";
 
-import { MouseEvent } from "react";
+import { MouseEvent, useState } from "react";
 import { Check } from "lucide-react";
 import {
   motion,
@@ -10,6 +10,7 @@ import {
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { useSession } from "next-auth/react";
+import AuthRequiredDialog from "@/components/shared/AuthRequiredDialog";
 
 const plans = [
   {
@@ -201,9 +202,10 @@ function PricingCard({
 
 export default function Pricing() {
   const baseURL = process.env.NEXT_PUBLIC_API_URL;
-  const session = useSession()
-  const token = session.data?.accessToken
-  console.log(session)
+  const session = useSession();
+  const token = session.data?.accessToken;
+  const [showAuthModal, setShowAuthModal] = useState(false);
+
   const { mutate: initializePayment, isPending } = useMutation({
     mutationFn: async (tier: string) => {
       const response = await axios.post(
@@ -234,10 +236,26 @@ export default function Pricing() {
       }
     },
 
-    onError: (error) => {
+    onError: (error: any) => {
       console.error("Payment initialization failed:", error);
+      const isUnauthenticated =
+        error?.response?.status === 401 ||
+        error?.response?.data?.message?.toLowerCase().includes("authenticated") ||
+        error?.response?.data?.message?.toLowerCase().includes("authorized");
+
+      if (isUnauthenticated) {
+        setShowAuthModal(true);
+      }
     },
   });
+
+  const handleSubscribe = (tier: string) => {
+    if (!token) {
+      setShowAuthModal(true);
+      return;
+    }
+    initializePayment(tier);
+  };
 
   return (
     <section className="pt-40 pb-20 relative  dark:bg-neutral-950 overflow-hidden">
@@ -276,11 +294,19 @@ export default function Pricing() {
               plan={plan}
               index={index}
               isPending={isPending}
-              onSubscribe={(tier) => initializePayment(tier)}
+              onSubscribe={handleSubscribe}
             />
           ))}
         </div>
       </div>
+
+      <AuthRequiredDialog
+        open={showAuthModal}
+        onOpenChange={setShowAuthModal}
+        loginHref={`/login?callbackUrl=${encodeURIComponent(
+          typeof window !== "undefined" ? window.location.pathname : "/"
+        )}`}
+      />
     </section>
   );
 }
