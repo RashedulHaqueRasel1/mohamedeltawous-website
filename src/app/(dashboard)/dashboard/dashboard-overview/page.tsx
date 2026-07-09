@@ -1,7 +1,7 @@
 "use client";
 
-import ComingSoon from "@/components/shared/ComingSoon";
+import DashboardOverview from "@/features/dashboardOverview/component/DashboardOverview";
 
 export default function Page() {
-  return <ComingSoon />;
+  return <DashboardOverview />;
 }
