@@ -721,18 +721,18 @@ export default function HistoryView() {
                                 const details = scenarioObj as { name: string; summary: string };
 
                                 const quadrantLabel: Record<string, string> = {
-                                  topRight: "High/Low",
-                                  topLeft: "High/High",
-                                  bottomLeft: "Low/Low",
-                                  bottomRight: "Low/High",
+                                  topRight: "High/High",
+                                  topLeft: "Low/High",
+                                  bottomLeft: "High/Low",
+                                  bottomRight: "Low/Low",
                                 };
 
-                                const quadrantCombination: Record<string, string> = {
-                                  topRight: "A2+B2",
-                                  topLeft: "A2+B1",
-                                  bottomLeft: "A1+B1",
-                                  bottomRight: "A1+B2",
-                                };
+                                // const quadrantCombination: Record<string, string> = {
+                                //   topRight: "A2+B2",
+                                //   topLeft: "A2+B1",
+                                //   bottomLeft: "A1+B1",
+                                //   bottomRight: "A1+B2",
+                                // };
 
                                 return (
                                   <div
@@ -741,9 +741,9 @@ export default function HistoryView() {
                                   >
                                     <div className="flex justify-between items-center">
                                       <span className="text-[9px] font-black tracking-widest text-slate-400 flex items-center gap-1.5">
-                                        <span className="px-1.5 py-0.5 bg-slate-100 dark:bg-slate-800 rounded font-mono text-[8px] text-slate-500 dark:text-slate-400 border border-slate-200/40 dark:border-slate-700/40">
+                                        {/* <span className="px-1.5 py-0.5 bg-slate-100 dark:bg-slate-800 rounded font-mono text-[8px] text-slate-500 dark:text-slate-400 border border-slate-200/40 dark:border-slate-700/40">
                                           {quadrantCombination[key]}
-                                        </span>
+                                        </span> */}
                                         {quadrantLabel[key] || key}
                                       </span>
                                     </div>
@@ -773,10 +773,10 @@ export default function HistoryView() {
                               <h4 className="text-lg font-black text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
                                 <span className="text-xs bg-slate-100 dark:bg-slate-800 text-slate-500 px-2 py-0.5 rounded font-mono">
                                   {s.combination === "A1+B1" ? "Low/Low" :
-                                   s.combination === "A1+B2" ? "Low/High" :
-                                   s.combination === "A2+B1" ? "High/High" :
-                                   s.combination === "A2+B2" ? "High/Low" :
-                                   (s.combination || `Scenario ${idx + 1}`)}
+                                    s.combination === "A1+B2" ? "Low/High" :
+                                      s.combination === "A2+B1" ? "High/High" :
+                                        s.combination === "A2+B2" ? "High/Low" :
+                                          (s.combination || `Scenario ${idx + 1}`)}
                                 </span>
                                 {s.name}
                               </h4>
