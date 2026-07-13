@@ -264,16 +264,6 @@ function NewScenarioContent() {
       return;
     }
 
-    if (!company.horizonYear.trim()) {
-      toast.error("Please choose a horizon year.");
-      return;
-    }
-     if (!company.horizonMonth.trim()) {
-      toast.error("Please choose a horizon month.");
-      return;
-    }
-
-
     if (workshopSessionId) {
       handleContinue();
       return;
@@ -363,36 +353,41 @@ function NewScenarioContent() {
       return;
     }
 
-    if (
-      sentInviteEmails.includes(normalizedEmail) &&
-      !window.confirm(
-        "This person was already invited. Resending will invalidate their previous link. Continue?",
-      )
-    ) {
+    const executeInvite = async () => {
+      try {
+        await sendInvite({ email, sessionId });
+        setSentInviteEmails((prev) =>
+          prev.includes(normalizedEmail) ? prev : [...prev, normalizedEmail],
+        );
+        toast.success(`Invitation sent to ${email}.`);
+        setInviteEmail("");
+        setIsInviteDialogOpen(false);
+      } catch (error: unknown) {
+        const message =
+          typeof error === "object" &&
+            error !== null &&
+            "response" in error &&
+            typeof (error as { response?: { data?: { message?: string } } })
+              .response?.data?.message === "string"
+            ? (error as { response: { data: { message: string } } }).response.data
+              .message
+            : "Failed to send invitation.";
+
+        toast.error(message);
+      }
+    };
+
+    if (sentInviteEmails.includes(normalizedEmail)) {
+      toast("This person was already invited. Resending will invalidate their previous link.", {
+        action: {
+          label: "Resend",
+          onClick: () => executeInvite(),
+        },
+      });
       return;
     }
 
-    try {
-      await sendInvite({ email, sessionId });
-      setSentInviteEmails((prev) =>
-        prev.includes(normalizedEmail) ? prev : [...prev, normalizedEmail],
-      );
-      toast.success(`Invitation sent to ${email}.`);
-      setInviteEmail("");
-      setIsInviteDialogOpen(false);
-    } catch (error: unknown) {
-      const message =
-        typeof error === "object" &&
-        error !== null &&
-        "response" in error &&
-        typeof (error as { response?: { data?: { message?: string } } })
-          .response?.data?.message === "string"
-          ? (error as { response: { data: { message: string } } }).response.data
-              .message
-          : "Failed to send invitation.";
-
-      toast.error(message);
-    }
+    await executeInvite();
   };
 
   const handleSaveEditedGuestFactor = async () => {
@@ -585,9 +580,8 @@ function NewScenarioContent() {
 
         <div className="mb-10 overflow-x-auto pb-8 sm:mb-16 sm:overflow-visible sm:pb-0">
           <div
-            className={`relative flex items-center justify-between sm:min-w-0 ${
-              isInviteMode ? "min-w-0" : "min-w-[680px]"
-            }`}
+            className={`relative flex items-center justify-between sm:min-w-0 ${isInviteMode ? "min-w-0" : "min-w-[680px]"
+              }`}
           >
             <div className="absolute top-1/2 left-0 w-full h-0.5 bg-slate-200 -translate-y-1/2 z-0" />
             <div
@@ -843,11 +837,10 @@ function NewScenarioContent() {
                       onClick={() => updateCompany({ horizonMonth: month })}
                       className={`
           flex-1 py-3 rounded-xl text-sm font-bold border-2 transition-all
-          ${
-            company.horizonMonth === month
-              ? "bg-[#0F172A] border-[#0F172A] text-white shadow-lg"
-              : "bg-white border-slate-100 text-slate-500 hover:border-slate-200"
-          }
+          ${company.horizonMonth === month
+                          ? "bg-[#0F172A] border-[#0F172A] text-white shadow-lg"
+                          : "bg-white border-slate-100 text-slate-500 hover:border-slate-200"
+                        }
         `}
                     >
                       {month}
@@ -871,11 +864,10 @@ function NewScenarioContent() {
                       onClick={() => updateCompany({ horizonYear: year })}
                       className={`
           flex-1 py-3 rounded-xl text-sm font-bold border-2 transition-all
-          ${
-            company.horizonYear === year
-              ? "bg-[#0F172A] border-[#0F172A] text-white shadow-lg"
-              : "bg-white border-slate-100 text-slate-500 hover:border-slate-200"
-          }
+          ${company.horizonYear === year
+                          ? "bg-[#0F172A] border-[#0F172A] text-white shadow-lg"
+                          : "bg-white border-slate-100 text-slate-500 hover:border-slate-200"
+                        }
         `}
                     >
                       {year}
@@ -949,10 +941,9 @@ function NewScenarioContent() {
                         onClick={() => handleToggleCategory(cat)}
                         className={`
                           px-5 py-2 rounded-full border-2 text-xs font-black transition-all duration-300 flex items-center gap-2
-                          ${
-                            isSelected
-                              ? "bg-[#0F172A] text-white border-[#0F172A] shadow-lg shadow-blue-900/20 scale-105"
-                              : "bg-white text-slate-500 border-slate-100 hover:border-[#F1F5F9] hover:bg-slate-50 active:scale-95"
+                          ${isSelected
+                            ? "bg-[#0F172A] text-white border-[#0F172A] shadow-lg shadow-blue-900/20 scale-105"
+                            : "bg-white text-slate-500 border-slate-100 hover:border-[#F1F5F9] hover:bg-slate-50 active:scale-95"
                           }
                         `}
                       >
