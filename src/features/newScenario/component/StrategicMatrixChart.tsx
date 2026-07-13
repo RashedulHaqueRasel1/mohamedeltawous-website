@@ -17,8 +17,8 @@ interface ScenarioMatrixItem {
 }
 
 interface StrategicMatrixChartProps {
-  axisA: AxisResult; // Y-axis (Vertical)
-  axisB: AxisResult; // X-axis (Horizontal)
+  axisA: AxisResult; // X-axis (Horizontal)
+  axisB: AxisResult; // Y-axis (Vertical)
   scenarios?:
     | {
         topRight: { name: string; summary: string; implications?: string };
@@ -36,17 +36,17 @@ const StrategicMatrixChart: React.FC<StrategicMatrixChartProps> = ({
 }) => {
   // Helper to map flat array to quadrants if necessary
   const getMappedScenarios = () => {
-    if (!scenarios) return null;
-    if (!Array.isArray(scenarios)) return scenarios;
+  if (!scenarios) return null;
+  if (!Array.isArray(scenarios)) return scenarios;
 
-    // Mapping based on A2/A1 (Vertical) and B2/B1 (Horizontal)
-    // Top Left: A2 + B1
+    // Mapping based on Axis A (Horizontal) and Axis B (Vertical)
+    // Top Left: A1 + B2
     // Top Right: A2 + B2
     // Bottom Left: A1 + B1
-    // Bottom Right: A1 + B2
+    // Bottom Right: A2 + B1
     return {
       topLeft: (scenarios.find(
-        (s) => s.combination === "A2+B1",
+        (s) => s.combination === "A1+B2",
       ) as ScenarioMatrixItem) || {
         name: "Scenario I",
         summary: "",
@@ -67,7 +67,7 @@ const StrategicMatrixChart: React.FC<StrategicMatrixChartProps> = ({
         implications: "",
       },
       bottomRight: (scenarios.find(
-        (s) => s.combination === "A1+B2",
+        (s) => s.combination === "A2+B1",
       ) as ScenarioMatrixItem) || {
         name: "Scenario IV",
         summary: "",
@@ -137,30 +137,30 @@ const StrategicMatrixChart: React.FC<StrategicMatrixChartProps> = ({
             Y-AXIS (VERTICAL) LABELS
             ======================= */}
 
-        {/* Top Label (High) */}
+        {/* Top Label */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-[calc(100%+1.5rem)] flex flex-col items-center z-30 w-[280px]">
           <div className="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] mb-2">
-            {axisA.label}
+            {axisB.label}
           </div>
           <div className="flex flex-col items-center">
             <div className="text-[11px] font-black text-emerald-600 flex items-center gap-1.5 uppercase tracking-wide">
               <ArrowUp className="w-3 h-3" />
-              {axisA.poleA2 || axisA.pole2}
+              {axisB.poleB2 || axisB.pole2}
             </div>
             <div className="mt-1 text-[9px] font-medium text-slate-500 max-w-[220px] text-center italic">
-              {axisA.selectedForce}
+              {axisB.selectedForce}
             </div>
           </div>
         </div>
 
-        {/* Bottom Label (Low) */}
+        {/* Bottom Label */}
         <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-[calc(100%+1.5rem)] flex flex-col items-center z-30 w-[280px]">
           <div className="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] mb-2">
-            {axisA.label}
+            {axisB.label}
           </div>
           <div className="text-[11px] font-black text-rose-500 flex items-center gap-1.5 uppercase tracking-wide">
             <ArrowDown className="w-3 h-3" />
-            {axisA.poleA1 || axisA.pole1}
+            {axisB.poleB1 || axisB.pole1}
           </div>
         </div>
 
@@ -168,30 +168,30 @@ const StrategicMatrixChart: React.FC<StrategicMatrixChartProps> = ({
             X-AXIS (HORIZONTAL) LABELS
             ======================= */}
 
-        {/* Right Label (High) */}
+        {/* Right Label */}
         <div className="absolute right-0 top-1/2 translate-x-[calc(100%+0.75rem)] -translate-y-1/2 flex flex-col items-start z-30 w-[140px]">
           <div className="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] mb-1 pl-1">
-            {axisB.label}
+            {axisA.label}
           </div>
           <div className="flex flex-col items-start">
             <div className="text-[10px] font-black text-emerald-600 flex items-center gap-1 uppercase tracking-wide">
               <ArrowRightIcon className="w-2.5 h-2.5" />
-              {axisB.poleB2 || axisB.pole2}
+              {axisA.poleA2 || axisA.pole2}
             </div>
             <div className="mt-1 text-[8px] font-medium text-slate-500 max-w-[130px] italic line-clamp-2 leading-tight">
-              {axisB.selectedForce}
+              {axisA.selectedForce}
             </div>
           </div>
         </div>
 
-        {/* Left Label (Low) */}
+        {/* Left Label */}
         <div className="absolute left-0 top-1/2 -translate-x-[calc(100%+0.75rem)] -translate-y-1/2 flex flex-col items-end z-30 w-[140px]">
           <div className="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] mb-1 pr-1">
-            {axisB.label}
+            {axisA.label}
           </div>
           <div className="text-[10px] font-black text-rose-500 flex items-center gap-1 uppercase tracking-wide">
             <ArrowLeft className="w-2.5 h-2.5" />
-            {axisB.poleB1 || axisB.pole1}
+            {axisA.poleA1 || axisA.pole1}
           </div>
         </div>
       </div>

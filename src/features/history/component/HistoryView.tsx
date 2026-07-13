@@ -717,14 +717,19 @@ export default function HistoryView() {
                             </h4>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                              {Object.entries(selectedItem.axes.scenarios).map(([key, scenarioObj]) => {
+                              {[
+                                { key: "topLeft", scenarioObj: selectedItem.axes.scenarios.topLeft },
+                                { key: "topRight", scenarioObj: selectedItem.axes.scenarios.topRight },
+                                { key: "bottomLeft", scenarioObj: selectedItem.axes.scenarios.bottomLeft },
+                                { key: "bottomRight", scenarioObj: selectedItem.axes.scenarios.bottomRight },
+                              ].map(({ key, scenarioObj }) => {
                                 const details = scenarioObj as { name: string; summary: string };
 
                                 const quadrantLabel: Record<string, string> = {
-                                  topRight: "High/High",
-                                  topLeft: "Low/High",
-                                  bottomLeft: "High/Low",
-                                  bottomRight: "Low/Low",
+                                  topLeft: "Left/Top",
+                                  topRight: "Right/Top",
+                                  bottomLeft: "Left/Bottom",
+                                  bottomRight: "Right/Bottom",
                                 };
 
                                 return (
@@ -762,10 +767,10 @@ export default function HistoryView() {
                             <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 border-b border-slate-50 dark:border-slate-800 pb-4 mb-4">
                               <h4 className="text-lg font-black text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
                                 <span className="text-xs bg-slate-100 dark:bg-slate-800 text-slate-500 px-2 py-0.5 rounded font-mono">
-                                  {s.combination === "A1+B1" ? "Low/Low" :
-                                    s.combination === "A1+B2" ? "Low/High" :
-                                      s.combination === "A2+B1" ? "High/High" :
-                                        s.combination === "A2+B2" ? "High/Low" :
+                                  {s.combination === "A1+B2" ? "Left/Top" :
+                                    s.combination === "A2+B2" ? "Right/Top" :
+                                      s.combination === "A1+B1" ? "Left/Bottom" :
+                                        s.combination === "A2+B1" ? "Right/Bottom" :
                                           (s.combination || `Scenario ${idx + 1}`)}
                                 </span>
                                 {s.name}
