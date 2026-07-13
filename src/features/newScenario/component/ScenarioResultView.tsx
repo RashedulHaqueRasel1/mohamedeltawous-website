@@ -81,6 +81,21 @@ const ScenarioResultView: React.FC = () => {
     Record<string, boolean>
   >({});
 
+  const getScenarioCombinationLabel = (combination?: string) => {
+    switch (combination) {
+      case "A1+B2":
+        return "Left/Top";
+      case "A2+B2":
+        return "Right/Top";
+      case "A1+B1":
+        return "Left/Bottom";
+      case "A2+B1":
+        return "Right/Bottom";
+      default:
+        return combination || "";
+    }
+  };
+
   const openModal = (scenario: ScenarioResult, letter: string) => {
     setModalData({ isOpen: true, scenario, scenarioLetter: letter });
     setExpandedSections({}); // Reset expanded state on new modal open
@@ -477,7 +492,7 @@ const ScenarioResultView: React.FC = () => {
                     </span>
                   </div>
                   <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest text-[9px]">
-                    Vertical Axis
+                    Horizontal Axis
                   </span>
                 </div>
                 <h3 className="text-lg font-black text-[#0F172A] mb-2 leading-tight">
@@ -499,7 +514,7 @@ const ScenarioResultView: React.FC = () => {
                     </span>
                   </div>
                   <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest text-[9px]">
-                    Horizontal Axis
+                    Vertical Axis
                   </span>
                 </div>
                 <h3 className="text-lg font-black text-[#0F172A] mb-2 leading-tight">
@@ -601,10 +616,10 @@ const ScenarioResultView: React.FC = () => {
               .filter((s) => s.name && s.story)
               .sort((a, b) => {
                 const order: Record<string, number> = {
-                  "A2+B2": 1, // High/Low
-                  "A2+B1": 2, // High/High
-                  "A1+B2": 3, // Low/High
-                  "A1+B1": 4, // Low/Low
+                  "A1+B2": 1, // Left/Top
+                  "A2+B2": 2, // Right/Top
+                  "A1+B1": 3, // Left/Bottom
+                  "A2+B1": 4, // Right/Bottom
                 };
 
                 return (
@@ -633,11 +648,8 @@ const ScenarioResultView: React.FC = () => {
 
                             <span className="px-3 py-1 rounded-full text-[10px] font-black tracking-widest bg-slate-50 text-slate-400 border border-slate-100 flex items-center gap-1.5 shadow-sm font-mono">
                               <LayoutGrid className="w-3 h-3" />
-                              {s.combination === "A1+B1" ? "Low/Low" :
-                               s.combination === "A1+B2" ? "High/Low" :
-                               s.combination === "A2+B1" ? "Low/High" :
-                               s.combination === "A2+B2" ? "High/High" :
-                               (s.combination || `Scenario ${idx + 1}`)}
+                              {getScenarioCombinationLabel(s.combination) ||
+                                `Scenario ${idx + 1}`}
                             </span>
                           </div>
                         </div>
