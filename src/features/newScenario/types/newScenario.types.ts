@@ -71,8 +71,8 @@ export interface CreateWorkshopPayload {
     industry?: string;
     summary?: string;
     focalQuestion: string;
-    horizonYear: string;
-    horizonMonth: string;
+    horizonYear?: string;
+    horizonMonth?: string;
   };
   forces?: string[];
 }
