@@ -185,6 +185,11 @@ session.refreshToken = string;
 
 **Client-side (in a Client Component):**
 
+
+
+
+
+.....
 ```tsx
 "use client";
 import { useSession } from "next-auth/react";
