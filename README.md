@@ -201,7 +201,7 @@ export default function MyComponent() {
 ```
 
 **Server-side (in a Server Component or API Route):**
-
+..
 ```tsx
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
